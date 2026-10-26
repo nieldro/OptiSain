@@ -12,6 +12,12 @@ import { steps } from '@/data/site';
 
     <div class="relative mt-16">
       <div class="absolute bottom-5 left-5 top-5 w-px -translate-x-1/2 bg-gray/30 md:hidden" aria-hidden="true"></div>
+      <div
+        class="pointer-events-none absolute left-5 top-0 z-20 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-amber shadow-[0_0_18px_5px_rgba(255,181,71,0.55)] md:left-1/2"
+        data-traveler
+        aria-hidden="true"
+      >
+      </div>
       <svg
         class="absolute left-1/2 top-0 hidden h-full w-2 -translate-x-1/2 md:block"
         viewBox="0 0 4 800"
@@ -93,6 +99,31 @@ import { steps } from '@/data/site';
           scrub: 0.6,
         },
       });
+    }
+  }
+
+  // Un satelite de luz recorre la linea mientras avanzas por los pasos.
+  const traveler = document.querySelector<HTMLElement>('[data-traveler]');
+  const track = traveler?.parentElement;
+  if (traveler && track) {
+    if (reduceMotion) {
+      traveler.style.display = 'none';
+    } else {
+      gsap.fromTo(
+        traveler,
+        { y: 0 },
+        {
+          y: () => Math.max(0, track.offsetHeight - 14),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: track,
+            start: 'top 65%',
+            end: 'bottom 65%',
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
     }
   }
 

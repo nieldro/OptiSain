@@ -1,0 +1,113 @@
+---
+const rowA = ['Páginas web', 'Tiendas online', 'Chatbots con IA', 'Automatizaciones'];
+const rowB = ['Dashboards', 'Branding', 'Publicidad digital', 'SEO'];
+---
+
+<section class="relative overflow-hidden py-16 sm:py-24" aria-hidden="true" data-bigmarquee>
+  <div class="bm-row" data-bm-row data-dir="-1">
+    {
+      [0, 1].map(() => (
+        <div class="bm-group">
+          {rowA.map((t) => (
+            <span class="bm-word">
+              {t}
+              <i class="bm-dot"></i>
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+  <div class="bm-row mt-2 sm:mt-4" data-bm-row data-dir="1">
+    {
+      [0, 1].map(() => (
+        <div class="bm-group">
+          {rowB.map((t) => (
+            <span class="bm-word bm-fill">
+              {t}
+              <i class="bm-dot"></i>
+            </span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .bm-row {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+
+  .bm-group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .bm-word {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1.2rem, 3vw, 3rem);
+    padding-right: clamp(1.2rem, 3vw, 3rem);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(3.2rem, 11vw, 9.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(211, 216, 226, 0.34);
+  }
+
+  .bm-fill {
+    color: rgba(211, 216, 226, 0.92);
+    -webkit-text-stroke: 0;
+  }
+
+  .bm-dot {
+    display: inline-block;
+    width: clamp(0.7rem, 1.6vw, 1.4rem);
+    height: clamp(0.7rem, 1.6vw, 1.4rem);
+    border-radius: 9999px;
+    background: var(--color-amber);
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Dos filas gigantes que se desplazan en sentidos opuestos al hacer scroll.
+  const rows = document.querySelectorAll<HTMLElement>('[data-bm-row]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  rows.forEach((row) => {
+    const dir = Number(row.dataset.dir ?? '-1');
+    const group = row.firstElementChild as HTMLElement | null;
+    if (!group) return;
+    const dist = () => group.offsetWidth;
+    if (reduce) return;
+
+    gsap.fromTo(
+      row,
+      { x: () => (dir < 0 ? 0 : -dist()) },
+      {
+        x: () => (dir < 0 ? -dist() * 0.6 : -dist() * 0.4),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: row.parentElement,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      }
+    );
+  });
+</script>

@@ -70,7 +70,7 @@ import { waLink } from '@/config';
           href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
           target="_blank"
           rel="noopener noreferrer"
-          class="relative inline-flex items-center overflow-hidden rounded-full bg-amber px-7 py-3.5 text-base font-semibold text-obsidian shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
+          class="btn-shine relative inline-flex items-center overflow-hidden rounded-full bg-amber px-7 py-3.5 text-base font-semibold text-obsidian shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
         >
           Cotiza tu proyecto
         </a>
@@ -308,19 +308,29 @@ import { waLink } from '@/config';
   if (!bh) bhCss?.classList.remove('hidden');
 
   if (bh) {
-    ScrollTrigger.create({
-      trigger: '#top',
-      start: 'top top',
-      end: 'bottom top',
-      onUpdate: (self) => bh.setProgress(self.progress),
-    });
-    if (!reduceMotion) {
-      gsap.to('[data-hero-content]', {
-        yPercent: -9,
-        opacity: 0.25,
-        ease: 'none',
-        scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true },
+    if (reduceMotion) {
+      ScrollTrigger.create({
+        trigger: '#top',
+        start: 'top top',
+        end: 'bottom top',
+        onUpdate: (self) => bh.setProgress(self.progress),
       });
+    } else {
+      // Inmersion: el hero queda fijo y la camara se lanza hacia el agujero negro con el scroll.
+      const mobile = window.matchMedia('(max-width: 767px)').matches;
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#top',
+          start: 'top top',
+          end: mobile ? '+=90%' : '+=130%',
+          scrub: true,
+          pin: true,
+          anticipatePin: 1,
+          onUpdate: (self) => bh.setProgress(self.progress),
+        },
+      });
+      tl.to('[data-hero-content]', { opacity: 0, yPercent: -14, ease: 'power1.in', duration: 0.55 }, 0);
+      tl.set({}, {}, 1);
     }
   }
 

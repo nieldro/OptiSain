@@ -75,6 +75,76 @@
     transform-origin: left;
   }
 
+  /* Barrido de luz sobre los botones principales al pasar el cursor */
+  .btn-shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.6) 50%, transparent 62%);
+    transform: translateX(-130%);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .btn-shine:hover::after {
+    transform: translateX(130%);
+  }
+
+  /* Resplandor que sigue al cursor dentro de las tarjetas */
+  @property --so {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+
+  .spot {
+    --so: 0;
+    background-image: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 181, 71, calc(var(--so) * 0.13)),
+      transparent 65%
+    );
+    transition: --so 0.5s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.5s, background-color 0.5s;
+  }
+
+  .spot:hover {
+    --so: 1;
+  }
+
+  /* Anillo que acompana al cursor (solo escritorio) */
+  .cursor-ring {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 80;
+    width: 38px;
+    height: 38px;
+    margin: -19px 0 0 -19px;
+    border: 1.5px solid rgba(211, 216, 226, 0.55);
+    border-radius: 9999px;
+    pointer-events: none;
+    opacity: 0;
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), height 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      margin 0.35s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.35s, border-color 0.35s, opacity 0.35s;
+  }
+
+  .cursor-ring[data-on] {
+    opacity: 1;
+  }
+
+  .cursor-ring[data-hot] {
+    width: 68px;
+    height: 68px;
+    margin: -34px 0 0 -34px;
+    border-color: rgba(255, 181, 71, 0.9);
+    background-color: rgba(255, 181, 71, 0.1);
+  }
+
   /* Cielo fijo detras de todo el contenido */
   .starfield {
     position: fixed;

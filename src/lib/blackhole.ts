@@ -190,6 +190,10 @@ void main() {
   // aura calida alrededor del agujero (bloom barato en pantalla)
   col += vec3(1.0, 0.62, 0.25) * 0.11 * exp(-length(uv) * 4.2) * uDisk * lit;
 
+  // destello anamorfico horizontal, como el de una lente de cine
+  float streak = exp(-abs(uv.y) * 38.0) * exp(-abs(uv.x) * 1.5);
+  col += vec3(1.0, 0.72, 0.38) * 0.075 * streak * uDisk * lit;
+
   // halo del anillo de fotones: luz que casi orbita el horizonte
   if (!hole) {
     float ring = exp(-9.0 * max(minr - 1.5, 0.0));
@@ -349,10 +353,12 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight);
     const L = cfg.layout(aspect);
     const p = state.progress;
-    const dist = L.dist * (1 - 0.34 * p);
-    const elev = L.elev + 0.2 * p + state.py * 0.05;
-    const azim = state.px * 0.16;
-    const offX = L.offX * (1 - 0.35 * p);
+    // Al avanzar el scroll la camara se lanza hacia el agujero y se centra.
+    const dist = L.dist * (1 - 0.52 * p);
+    const elev = L.elev + 0.28 * p + state.py * 0.05;
+    const azim = state.px * 0.16 + p * 0.5;
+    const offX = L.offX * (1 - 0.75 * p);
+    const offY = L.offY * (1 - 0.6 * p);
 
     gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
     gl!.viewport(0, 0, canvas.width, canvas.height);
@@ -363,8 +369,8 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     gl!.uniform1f(U.elev, elev);
     gl!.uniform1f(U.azim, azim);
     gl!.uniform1f(U.roll, L.roll);
-    gl!.uniform2f(U.off, offX, L.offY);
-    gl!.uniform1f(U.disk, cfg.disk ?? 1);
+    gl!.uniform2f(U.off, offX, offY);
+    gl!.uniform1f(U.disk, (cfg.disk ?? 1) * (1 + 0.35 * p));
     gl!.uniform1f(U.spin, cfg.spin ?? 1);
     gl!.uniform1f(U.prog, p);
     gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);

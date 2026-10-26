@@ -51,7 +51,7 @@ const filterClass =
       {
         services.map((service) => (
           <article
-            class="group relative flex flex-col rounded-2xl border border-gray/25 bg-obsidian/55 p-8 transition-colors duration-500 hover:border-silver/45 hover:bg-gunmetal/20"
+            class="spot group relative flex flex-col rounded-2xl border border-gray/25 bg-obsidian/55 p-8 hover:border-silver/45"
             data-reveal
             data-service-card
             data-service-line={service.line}
@@ -105,7 +105,8 @@ const filterClass =
         {
           combos.map((combo) => (
             <div
-              class="rounded-2xl border border-gray/25 bg-gunmetal/20 p-7 transition-colors duration-500 hover:border-silver/45"
+              class="spot rounded-2xl border border-gray/25 bg-gunmetal/20 p-7 hover:border-silver/45"
+              data-spot
               data-reveal
             >
               <h4 class="font-heading text-lg font-semibold text-gainsboro">{combo.name}</h4>
@@ -119,6 +120,19 @@ const filterClass =
 </section>
 
 <script>
+  // El resplandor de las tarjetas sigue al cursor.
+  document.querySelectorAll<HTMLElement>('.spot').forEach((card) => {
+    card.addEventListener(
+      'pointermove',
+      (e) => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
+      },
+      { passive: true }
+    );
+  });
+
   const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
   const cards = document.querySelectorAll<HTMLElement>('[data-service-card]');
 

@@ -6,6 +6,7 @@ import Marquee from '@/components/Marquee.astro';
 import Services from '@/components/Services.astro';
 import HowWeWork from '@/components/HowWeWork.astro';
 import WhyOptisain from '@/components/WhyOptisain.astro';
+import BigMarquee from '@/components/BigMarquee.astro';
 import ClosingBand from '@/components/ClosingBand.astro';
 import Faq from '@/components/Faq.astro';
 import Contact from '@/components/Contact.astro';
@@ -21,6 +22,7 @@ import WhatsAppFab from '@/components/WhatsAppFab.astro';
     <Services />
     <HowWeWork />
     <WhyOptisain />
+    <BigMarquee />
     <ClosingBand />
     <Faq />
     <Contact />
@@ -34,9 +36,11 @@ import WhatsAppFab from '@/components/WhatsAppFab.astro';
   import { initReveal } from '@/lib/reveal';
   import { initHeadingReveal } from '@/lib/heading-reveal';
   import { initStarfield } from '@/lib/starfield';
+  import { initCursorRing } from '@/lib/cursor';
 
   initSmoothScroll();
   initStarfield();
+  initCursorRing();
   initHeadingReveal();
   initReveal();
 </script>
