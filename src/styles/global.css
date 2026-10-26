@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/lexend/wght.css';
+@import '@fontsource-variable/manrope/wght.css';
 
 @theme {
   --color-obsidian: #161516;
@@ -8,8 +10,8 @@
   --color-gray: #606a7a;
   --color-amber: #ffb547;
 
-  --font-heading: 'Lexend', sans-serif;
-  --font-body: 'Manrope', sans-serif;
+  --font-heading: 'Lexend Variable', 'Lexend', sans-serif;
+  --font-body: 'Manrope Variable', 'Manrope', sans-serif;
 }
 
 @layer base {
