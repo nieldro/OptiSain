@@ -1,16 +1,10 @@
 ---
 import Icon from '@/components/Icon.astro';
 import { services } from '@/data/services';
-import {
-  CONTACT_EMAIL,
-  INSTAGRAM_URL,
-  INSTAGRAM_HANDLE,
-  WHATSAPP_DISPLAY,
-  waLink,
-} from '@/config';
+import { WHATSAPP_DISPLAY, waLink } from '@/config';
 ---
 
-<section id="contacto" class="relative py-28 sm:py-40" aria-label="Contacto">
+<section id="contacto" class="relative py-20 sm:py-40" aria-label="Contacto">
   <div class="mx-auto max-w-5xl px-5 sm:px-8">
     <div class="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.2fr]">
       <div data-reveal-group>
@@ -18,24 +12,10 @@ import {
           Hablemos de tu proyecto
         </h2>
         <p class="mt-4 text-silver" data-reveal>
-          Escríbenos y te respondemos el mismo día. También puedes encontrarnos aquí:
+          Escríbenos y te respondemos el mismo día.
         </p>
 
         <ul class="mt-8 space-y-4" data-reveal>
-          <li class="flex items-center gap-3 text-gainsboro">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
-              <Icon name="mail" class="h-5 w-5" />
-            </span>
-            <a href={`mailto:${CONTACT_EMAIL}`} class="py-2 hover:text-amber">{CONTACT_EMAIL}</a>
-          </li>
-          <li class="flex items-center gap-3 text-gainsboro">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
-              <Icon name="instagram" class="h-5 w-5" />
-            </span>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" class="py-2 hover:text-amber">
-              {INSTAGRAM_HANDLE}
-            </a>
-          </li>
           <li class="flex items-center gap-3 text-gainsboro">
             <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
               <Icon name="whatsapp" class="h-5 w-5" />
@@ -84,7 +64,7 @@ import {
             inputmode="tel"
             aria-describedby="err-whatsapp"
             class="w-full rounded-lg border border-gray/40 bg-obsidian/60 px-4 py-3 text-gainsboro placeholder:text-silver focus:border-amber aria-[invalid=true]:border-amber"
-            placeholder="+57 300 000 0000"
+            placeholder="Ej. 310 123 4567"
           />
           <p id="err-whatsapp" class="mt-1 hidden text-sm text-amber" data-error-for="whatsapp">Escribe un WhatsApp válido.</p>
         </div>
@@ -124,6 +104,7 @@ import {
         >
           Enviar por WhatsApp
         </button>
+        <p id="form-status" role="status" class="hidden text-sm text-silver"></p>
       </form>
     </div>
   </div>
@@ -164,10 +145,28 @@ import {
       return;
     }
 
-    const text = `Hola OptiSain, soy ${name}. Me interesa ${service}.${
-      message ? ` ${message}` : ''
-    } Mi WhatsApp: ${whatsapp}.`;
+    const text = [
+      'Hola OptiSain, quiero cotizar un proyecto.',
+      '',
+      `Nombre: ${name}`,
+      `Servicio: ${service}`,
+      `WhatsApp: ${whatsapp}`,
+      ...(message ? [`Mensaje: ${message}`] : []),
+    ].join('\n');
 
-    window.open(waLink(text), '_blank', 'noopener,noreferrer');
+    const url = waLink(text);
+    const status = document.getElementById('form-status');
+    if (status) {
+      status.textContent = 'Abriendo WhatsApp con tus datos. Solo falta que presiones enviar.';
+      status.classList.remove('hidden');
+    }
+
+    // Si el navegador bloquea la ventana nueva, se abre WhatsApp en esta misma pestaña.
+    const win = window.open(url, '_blank');
+    if (win) {
+      win.opener = null;
+    } else {
+      window.location.href = url;
+    }
   });
 </script>

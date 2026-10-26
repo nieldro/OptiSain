@@ -1,6 +1,6 @@
 ---
 import { navLinks } from '@/data/site';
-import { INSTAGRAM_URL, INSTAGRAM_HANDLE, CONTACT_EMAIL } from '@/config';
+import { WHATSAPP_DISPLAY, waLink } from '@/config';
 ---
 
 <footer class="border-t border-gray/25 py-14">
@@ -28,14 +28,14 @@ import { INSTAGRAM_URL, INSTAGRAM_HANDLE, CONTACT_EMAIL } from '@/config';
         }
       </ul>
 
-      <div class="flex items-center gap-4">
-        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" class="text-sm text-silver hover:text-amber">
-          {INSTAGRAM_HANDLE}
-        </a>
-        <a href={`mailto:${CONTACT_EMAIL}`} class="text-sm text-silver hover:text-amber">
-          {CONTACT_EMAIL}
-        </a>
-      </div>
+      <a
+        href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-11 items-center text-sm text-silver hover:text-amber"
+      >
+        {WHATSAPP_DISPLAY}
+      </a>
     </div>
 
     <p class="mt-10 text-center text-xs text-silver">© 2026 OptiSain. Hecho en Colombia.</p>
