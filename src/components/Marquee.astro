@@ -56,13 +56,13 @@ const items = [
       const vel = y - lastY;
       lastY = y;
 
-      boost += (Math.min(Math.abs(vel), 90) * 9 - boost) * 0.08;
-      skew += (Math.max(-7, Math.min(7, -vel * 0.18)) - skew) * 0.12;
+      boost += (Math.min(Math.abs(vel), 90) * 5 - boost) * 0.06;
+      skew += (Math.max(-2.5, Math.min(2.5, -vel * 0.06)) - skew) * 0.1;
       mul += ((hover ? 0.12 : 1) - mul) * 0.08;
 
       // el periodo es lo que separa el inicio de la 1.ª mitad del de la 2.ª (incluye el gap)
       const period = (track.children[1] as HTMLElement).offsetLeft - (track.children[0] as HTMLElement).offsetLeft;
-      x -= ((52 + boost) * mul * dt) / 1000;
+      x -= ((36 + boost) * mul * dt) / 1000;
       if (x <= -period) x += period;
       track.style.transform = `translate3d(${x}px,0,0) skewX(${skew}deg)`;
     });

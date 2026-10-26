@@ -16,13 +16,13 @@ export function initReveal() {
       return;
     }
 
-    gsap.set(items, { opacity: 0, y: 24 });
+    gsap.set(items, { opacity: 0, y: 14 });
     gsap.to(items, {
       opacity: 1,
       y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.1,
+      duration: 1,
+      ease: 'expo.out',
+      stagger: 0.07,
       scrollTrigger: {
         trigger: group,
         start: 'top 82%',
@@ -37,12 +37,12 @@ export function initReveal() {
       el.classList.remove('opacity-0', 'translate-y-6');
       return;
     }
-    gsap.set(el, { opacity: 0, y: 24 });
+    gsap.set(el, { opacity: 0, y: 14 });
     gsap.to(el, {
       opacity: 1,
       y: 0,
-      duration: 0.7,
-      ease: 'power3.out',
+      duration: 1,
+      ease: 'expo.out',
       scrollTrigger: {
         trigger: el,
         start: 'top 85%',

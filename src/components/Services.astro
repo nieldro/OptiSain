@@ -2,63 +2,37 @@
 import Icon from '@/components/Icon.astro';
 import { lines, services, combos } from '@/data/services';
 import { waLink } from '@/config';
+
+const filterClass =
+  'min-h-11 rounded-full border border-gray/40 px-5 py-2 text-sm font-medium text-silver transition-colors duration-300 hover:border-silver hover:text-gainsboro data-[active=true]:border-gainsboro data-[active=true]:bg-gainsboro data-[active=true]:text-obsidian';
 ---
 
-<section id="servicios" class="relative py-24 sm:py-32" aria-label="Servicios">
+<section id="servicios" class="relative py-28 sm:py-40" aria-label="Servicios">
   <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="mx-auto max-w-2xl text-center" data-reveal-group>
-      <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+    <div class="mx-auto max-w-3xl text-center" data-reveal-group>
+      <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
         Todo lo que tu negocio necesita para crecer en línea
       </h2>
-      <p class="mt-4 text-silver" data-reveal>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-silver" data-reveal>
         Elige una línea o mira todos los servicios. Cada uno con un alcance claro, sin precios
         escondidos: cotiza directo por WhatsApp.
       </p>
-
-      <div class="mt-8 flex items-center justify-center gap-6 sm:gap-10" data-reveal>
-        <div class="text-center">
-          <p class="font-heading text-3xl font-bold text-amber sm:text-4xl" data-counter data-target={services.length}>
-            {services.length}
-          </p>
-          <p class="mt-1 text-xs uppercase tracking-widest text-silver">Servicios</p>
-        </div>
-        <div class="h-10 w-px bg-gray/40" aria-hidden="true"></div>
-        <div class="text-center">
-          <p class="font-heading text-3xl font-bold text-amber sm:text-4xl" data-counter data-target={lines.length}>
-            {lines.length}
-          </p>
-          <p class="mt-1 text-xs uppercase tracking-widest text-silver">Líneas</p>
-        </div>
-        <div class="h-10 w-px bg-gray/40" aria-hidden="true"></div>
-        <div class="text-center">
-          <p class="font-heading text-3xl font-bold text-amber sm:text-4xl" data-counter data-target={combos.length}>
-            {combos.length}
-          </p>
-          <p class="mt-1 text-xs uppercase tracking-widest text-silver">Combos</p>
-        </div>
-      </div>
     </div>
 
     <div
-      class="mt-10 flex flex-wrap justify-center gap-2.5"
+      class="mt-14 flex flex-wrap justify-center gap-2.5"
       role="group"
       aria-label="Filtrar servicios por línea"
       data-filters
     >
-      <button
-        type="button"
-        class="min-h-11 rounded-full border border-gray/60 px-4 py-2 text-sm font-medium text-gainsboro transition-colors hover:border-gainsboro data-[active=true]:border-amber data-[active=true]:bg-amber data-[active=true]:text-obsidian"
-        data-filter="todos"
-        data-active="true"
-        aria-pressed="true"
-      >
+      <button type="button" class={filterClass} data-filter="todos" data-active="true" aria-pressed="true">
         Todos
       </button>
       {
         lines.map((line) => (
           <button
             type="button"
-            class="min-h-11 rounded-full border border-gray/60 px-4 py-2 text-sm font-medium text-gainsboro transition-colors hover:border-gainsboro data-[active=true]:border-amber data-[active=true]:bg-amber data-[active=true]:text-obsidian"
+            class={filterClass}
             data-filter={line.id}
             data-active="false"
             aria-pressed="false"
@@ -70,38 +44,25 @@ import { waLink } from '@/config';
     </div>
 
     <div
-      class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      class="mt-14 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
       data-reveal-group
       data-services-grid
     >
       {
         services.map((service) => (
           <article
-            class="group relative overflow-hidden rounded-2xl border border-gray/50 bg-gunmetal/35 p-6 transition-shadow [transform-style:preserve-3d]"
+            class="group relative flex flex-col rounded-2xl border border-gray/25 bg-obsidian/55 p-8 transition-colors duration-500 hover:border-silver/45 hover:bg-gunmetal/20"
             data-reveal
-            data-tilt
             data-service-card
             data-service-line={service.line}
           >
-            <div
-              class="pointer-events-none absolute -inset-10 opacity-0 transition-opacity duration-300"
-              data-tilt-glow
-              style="background: radial-gradient(220px circle at center, rgba(255,181,71,0.18), transparent 70%);"
-            />
-            <div class="relative flex h-12 w-12 items-center justify-center">
-              <span class="pointer-events-none absolute inset-[-5px] rounded-full border border-dashed border-amber/0 transition-colors duration-500 group-hover:border-amber/70 group-hover:animate-[spin_3.5s_linear_infinite]" />
-              <div class="relative flex h-12 w-12 items-center justify-center rounded-xl bg-obsidian text-gainsboro">
-                <Icon name={service.icon} class="h-6 w-6" />
-              </div>
-            </div>
-            <h3 class="relative mt-5 font-heading text-xl font-semibold text-gainsboro">
-              {service.name}
-            </h3>
-            <p class="relative mt-2 text-sm text-silver">{service.summary}</p>
-            <ul class="relative mt-4 space-y-2">
+            <Icon name={service.icon} class="h-7 w-7 text-silver transition-colors duration-500 group-hover:text-amber" />
+            <h3 class="mt-6 font-heading text-xl font-semibold text-gainsboro">{service.name}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-silver">{service.summary}</p>
+            <ul class="mt-6 space-y-2.5 border-t border-gray/20 pt-6">
               {service.includes.map((item) => (
-                <li class="flex items-start gap-2 text-sm text-silver">
-                  <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-silver" />
+                <li class="flex items-start gap-2.5 text-sm leading-relaxed text-silver">
+                  <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-gray" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -111,11 +72,20 @@ import { waLink } from '@/config';
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Cotizar ${service.name} por WhatsApp`}
-              class="relative -mb-2 mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-amber transition-transform hover:translate-x-0.5"
+              class="mt-auto inline-flex min-h-11 items-center gap-2 pt-6 text-sm font-semibold text-amber"
             >
               Cotizar
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+              <svg
+                class="transition-transform duration-300 group-hover:translate-x-1"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </a>
           </article>
@@ -123,25 +93,23 @@ import { waLink } from '@/config';
       }
     </div>
 
-    <div class="mt-20" data-reveal-group>
-      <div class="text-center">
-        <h3 class="text-balance font-heading text-2xl font-bold text-gainsboro sm:text-3xl" data-reveal>
-          Soluciones completas
-        </h3>
-      </div>
+    <div class="mt-32" data-reveal-group>
+      <h3
+        class="text-balance text-center font-heading text-2xl font-bold tracking-tight text-gainsboro sm:text-4xl"
+        data-reveal
+      >
+        Soluciones completas
+      </h3>
 
-      <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {
           combos.map((combo) => (
             <div
-              class="combo-card relative rounded-2xl bg-gunmetal/40 p-[1px]"
+              class="rounded-2xl border border-gray/25 bg-gunmetal/20 p-7 transition-colors duration-500 hover:border-silver/45"
               data-reveal
             >
-              <div class="combo-border absolute inset-0 rounded-2xl" aria-hidden="true" />
-              <div class="relative h-full rounded-2xl bg-obsidian p-6">
-                <h4 class="font-heading text-lg font-semibold text-gainsboro">{combo.name}</h4>
-                <p class="mt-2 text-sm text-silver">{combo.description}</p>
-              </div>
+              <h4 class="font-heading text-lg font-semibold text-gainsboro">{combo.name}</h4>
+              <p class="mt-3 text-sm leading-relaxed text-silver">{combo.description}</p>
             </div>
           ))
         }
@@ -149,36 +117,6 @@ import { waLink } from '@/config';
     </div>
   </div>
 </section>
-
-<style>
-  .combo-border {
-    background: conic-gradient(
-      from var(--angle, 0deg),
-      transparent 0%,
-      #ffb547 12%,
-      transparent 28%
-    );
-    animation: spin-border 5s linear infinite;
-  }
-
-  @property --angle {
-    syntax: '<angle>';
-    initial-value: 0deg;
-    inherits: false;
-  }
-
-  @keyframes spin-border {
-    to {
-      --angle: 360deg;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .combo-border {
-      animation: none;
-    }
-  }
-</style>
 
 <script>
   const filterButtons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');

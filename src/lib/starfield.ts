@@ -35,7 +35,7 @@ export function initStarfield() {
     canvas.width = Math.floor(W * dpr);
     canvas.height = Math.floor(H * dpr);
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.max(60, Math.min(170, Math.floor((W * H) / 9500)));
+    const n = Math.max(50, Math.min(120, Math.floor((W * H) / 14000)));
     stars = Array.from({ length: n }, () => {
       const d = 0.15 + Math.random() * 0.85;
       return {
@@ -45,13 +45,10 @@ export function initStarfield() {
         s: 0.35 + d * 1.1,
         ph: Math.random() * Math.PI * 2,
         sp: 0.6 + Math.random() * 1.6,
-        c: colors[Math.random() < 0.08 ? 2 : Math.random() < 0.45 ? 1 : 0],
+        c: colors[Math.random() < 0.03 ? 2 : Math.random() < 0.5 ? 1 : 0],
       };
     });
   }
-
-  let shoot: { x: number; y: number; vx: number; vy: number; life: number } | null = null;
-  let nextShoot = performance.now() + 5000 + Math.random() * 6000;
 
   function draw(t: number) {
     ctx!.clearRect(0, 0, W, H);
@@ -65,36 +62,6 @@ export function initStarfield() {
       ctx!.fill();
     }
 
-    if (reduce) return;
-    if (!shoot && t > nextShoot) {
-      const fromLeft = Math.random() < 0.5;
-      shoot = {
-        x: fromLeft ? Math.random() * W * 0.5 : W * 0.5 + Math.random() * W * 0.5,
-        y: Math.random() * H * 0.45,
-        vx: (fromLeft ? 1 : -1) * (7 + Math.random() * 4),
-        vy: 3 + Math.random() * 2.5,
-        life: 1,
-      };
-      nextShoot = t + 8000 + Math.random() * 9000;
-    }
-    if (shoot) {
-      const sh = shoot;
-      const tx = sh.x - sh.vx * 9;
-      const ty = sh.y - sh.vy * 9;
-      const g = ctx!.createLinearGradient(sh.x, sh.y, tx, ty);
-      g.addColorStop(0, `rgba(211,216,226,${0.85 * sh.life})`);
-      g.addColorStop(1, 'rgba(211,216,226,0)');
-      ctx!.strokeStyle = g;
-      ctx!.lineWidth = 1.2;
-      ctx!.beginPath();
-      ctx!.moveTo(sh.x, sh.y);
-      ctx!.lineTo(tx, ty);
-      ctx!.stroke();
-      sh.x += sh.vx;
-      sh.y += sh.vy;
-      sh.life -= 0.016;
-      if (sh.life <= 0 || sh.x < -50 || sh.x > W + 50 || sh.y > H + 50) shoot = null;
-    }
   }
 
   build();

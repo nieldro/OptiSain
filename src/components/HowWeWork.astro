@@ -2,10 +2,10 @@
 import { steps } from '@/data/site';
 ---
 
-<section id="como-trabajamos" class="relative py-24 sm:py-32" aria-label="Cómo trabajamos">
+<section id="como-trabajamos" class="relative py-28 sm:py-40" aria-label="Cómo trabajamos">
   <div class="mx-auto max-w-5xl px-5 sm:px-8">
     <div class="mx-auto max-w-2xl text-center" data-reveal-group>
-      <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+      <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
         Un proceso claro, de principio a fin
       </h2>
     </div>
@@ -102,7 +102,7 @@ import { steps } from '@/data/site';
       trigger: step,
       start: 'top 65%',
       onEnter: () => {
-        dot.classList.add('border-amber', 'text-amber', 'shadow-[0_0_0_6px_rgba(255,181,71,0.15)]');
+        dot.classList.add('border-amber', 'text-amber');
       },
     });
   });

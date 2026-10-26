@@ -32,13 +32,12 @@ export function initHeadingReveal() {
     });
 
     const words = h.querySelectorAll('.hw-i');
-    gsap.set(words, { yPercent: 118, rotate: 5 });
+    gsap.set(words, { yPercent: 105 });
     gsap.to(words, {
       yPercent: 0,
-      rotate: 0,
-      duration: 1.15,
+      duration: 1.1,
       ease: 'expo.out',
-      stagger: 0.055,
+      stagger: 0.04,
       scrollTrigger: { trigger: h, start: 'top 88%', once: true },
     });
   });
