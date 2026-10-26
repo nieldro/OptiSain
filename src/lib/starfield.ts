@@ -22,6 +22,8 @@ export function initStarfield() {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  // En celulares: pocas estrellas, sin parpadeo continuo y solo se redibuja cuando hay scroll.
+  const light = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
   let W = 0;
   let H = 0;
   let dpr = 1;
@@ -35,7 +37,7 @@ export function initStarfield() {
     canvas.width = Math.floor(W * dpr);
     canvas.height = Math.floor(H * dpr);
     ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.max(50, Math.min(120, Math.floor((W * H) / 14000)));
+    const n = light ? 40 : Math.max(50, Math.min(120, Math.floor((W * H) / 14000)));
     stars = Array.from({ length: n }, () => {
       const d = 0.15 + Math.random() * 0.85;
       return {
@@ -55,7 +57,7 @@ export function initStarfield() {
     const sy = reduce ? 0 : window.scrollY;
     for (const s of stars) {
       const y = (((s.y - sy * s.d * 0.22) % H) + H) % H;
-      const tw = reduce ? 1 : 0.65 + 0.35 * Math.sin(t * 0.001 * s.sp + s.ph);
+      const tw = reduce || light ? 1 : 0.65 + 0.35 * Math.sin(t * 0.001 * s.sp + s.ph);
       ctx!.fillStyle = `rgba(${s.c},${(0.18 + s.d * 0.55) * tw})`;
       ctx!.beginPath();
       ctx!.arc(s.x, y, s.s, 0, Math.PI * 2);
@@ -75,8 +77,15 @@ export function initStarfield() {
     return;
   }
 
+  let lastSy = -1;
   function loop(t: number) {
-    if (!document.hidden) draw(t);
+    if (!document.hidden) {
+      const sy = window.scrollY;
+      if (!light || sy !== lastSy) {
+        draw(t);
+        lastSy = sy;
+      }
+    }
     requestAnimationFrame(loop);
   }
   requestAnimationFrame(loop);

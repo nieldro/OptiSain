@@ -43,6 +43,10 @@ import { waLink } from '@/config';
 
     <canvas class="bh-canvas absolute inset-0 h-full w-full" data-bh-canvas></canvas>
 
+    <!-- Fundidos de arriba y abajo con degradados (mas baratos que una mascara sobre el canvas) -->
+    <div class="absolute inset-x-0 top-0 h-[14%] bg-gradient-to-b from-obsidian to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-[26%] bg-gradient-to-t from-obsidian to-transparent"></div>
+
     <!-- Velo para que el texto siempre se lea sobre el disco -->
     <div
       class="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,21,22,0.72)_0%,rgba(22,21,22,0.5)_58%,transparent_100%)] xl:bg-[linear-gradient(90deg,rgba(22,21,22,0.9)_0%,rgba(22,21,22,0.62)_30%,transparent_60%)]"
@@ -103,8 +107,6 @@ import { waLink } from '@/config';
   .bh-canvas {
     opacity: 0;
     transition: opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
   }
 
   .bh-canvas[data-ready] {
@@ -308,7 +310,9 @@ import { waLink } from '@/config';
   if (!bh) bhCss?.classList.remove('hidden');
 
   if (bh) {
-    if (reduceMotion) {
+    const light = isTouch || window.innerWidth < 768;
+    if (reduceMotion || light) {
+      // Celulares: sin hero fijado (el scroll nativo va mas fluido); el agujero solo avanza con el scroll.
       ScrollTrigger.create({
         trigger: '#top',
         start: 'top top',
@@ -317,12 +321,11 @@ import { waLink } from '@/config';
       });
     } else {
       // Inmersion: el hero queda fijo y la camara se lanza hacia el agujero negro con el scroll.
-      const mobile = window.matchMedia('(max-width: 767px)').matches;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: '#top',
           start: 'top top',
-          end: mobile ? '+=90%' : '+=130%',
+          end: '+=130%',
           scrub: true,
           pin: true,
           anticipatePin: 1,

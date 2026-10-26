@@ -50,6 +50,7 @@ uniform vec2  uOff;
 uniform float uDisk;
 uniform float uSpin;
 uniform float uProg;
+uniform float uSteps;
 
 #define STEPS 260
 #define RIN  2.35
@@ -137,6 +138,7 @@ void main() {
   bool escaped = false;
 
   for (int i = 0; i < STEPS; i++) {
+    if (float(i) > uSteps) break; // en celulares se recorta el numero de pasos
     float r2 = dot(p, p);
     float r = sqrt(r2);
     minr = min(minr, r);
@@ -313,14 +315,21 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     disk: u('uDisk'),
     spin: u('uSpin'),
     prog: u('uProg'),
+    steps: u('uSteps'),
   };
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
-  // Resolucion nativa de la pantalla (sin submuestrear), con tope de pixeles; en el movil un poco menos.
-  const maxScale = Math.min(window.devicePixelRatio || 1, 2) * (coarse ? 0.8 : 1);
-  const minScale = 0.55;
-  const MAX_PIXELS = 2_600_000;
+  // Escritorio: resolucion nativa con tope de pixeles. Tactil/celular: modo ligero
+  // (pocos pixeles, menos pasos del trazado, 30 fps) para que el scroll no se trabe.
+  const light = coarse || window.innerWidth < 768;
+  const maxScale = light ? 0.5 : Math.min(window.devicePixelRatio || 1, 2);
+  const minScale = light ? 0.32 : 0.55;
+  const MAX_PIXELS = light ? 420_000 : 2_600_000;
+  const stepsLimit = light ? 175 : 260;
+  const frameGap = light ? 30 : 0;
+  const slowMs = light ? 42 : 27;
+  let lastFrame = 0;
   let scale = maxScale;
 
   const state = { progress: 0, targetProgress: 0, px: 0, py: 0, tpx: 0, tpy: 0 };
@@ -373,6 +382,7 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     gl!.uniform1f(U.disk, (cfg.disk ?? 1) * (1 + 0.35 * p));
     gl!.uniform1f(U.spin, cfg.spin ?? 1);
     gl!.uniform1f(U.prog, p);
+    gl!.uniform1f(U.steps, stepsLimit);
     gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
 
     // 2.º paso: textura -> canvas con suavizado de bordes
@@ -396,13 +406,19 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     raf = 0;
     if (!visible || document.hidden) return;
 
+    if (frameGap && now - lastFrame < frameGap) {
+      raf = requestAnimationFrame(frame);
+      return;
+    }
+    lastFrame = now;
+
     const dtf = now - last;
     last = now;
     if (dtf < 200) {
       ema = ema * 0.9 + dtf * 0.1;
       frames++;
       if (frames % 30 === 0) {
-        if (ema > 27 && scale > minScale) {
+        if (ema > slowMs && scale > minScale) {
           scale = Math.max(minScale, scale * 0.82);
           resize();
         } else if (ema < 14 && scale < maxScale) {

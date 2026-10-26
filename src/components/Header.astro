@@ -111,13 +111,16 @@ import { waLink } from '@/config';
   const mobileMenu = document.querySelector('[data-mobile-menu]');
   const bars = toggle?.querySelectorAll('[data-bar]');
   let menuOpen = false;
+  const coarse = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
 
   function updateOnScroll() {
     const y = window.scrollY;
+    // En tactil el desenfoque del fondo (backdrop-filter) es caro al hacer scroll: se usa un fondo casi opaco.
+    const solid = coarse ? ['bg-obsidian/95', 'border-gray/30'] : ['bg-obsidian/70', 'backdrop-blur-xl', 'border-gray/30'];
     if (y > 40) {
-      headerBg?.classList.add('bg-obsidian/70', 'backdrop-blur-xl', 'border-gray/30');
+      headerBg?.classList.add(...solid);
     } else {
-      headerBg?.classList.remove('bg-obsidian/70', 'backdrop-blur-xl', 'border-gray/30');
+      headerBg?.classList.remove(...solid);
     }
 
     const doc = document.documentElement;

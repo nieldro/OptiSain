@@ -106,6 +106,15 @@
     background: radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.38) 100%);
   }
 
+  /* Capas fijas a pantalla completa: en tactil se quitan para no repintar al hacer scroll */
+  @media (pointer: coarse), (max-width: 767px) {
+    body::before,
+    body::after,
+    .grain::before {
+      display: none;
+    }
+  }
+
   /* Marca gigante del pie */
   .footer-word {
     font-family: var(--font-heading);

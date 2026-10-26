@@ -3,7 +3,9 @@ import gsap from 'gsap';
 
 export function initSmoothScroll() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
+  // En tactil el scroll nativo ya es suave; Lenis solo le anade trabajo.
+  const touch = window.matchMedia('(pointer: coarse)').matches;
+  if (reduceMotion || touch) return;
 
   const lenis = new Lenis({
     duration: 1.1,

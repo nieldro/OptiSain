@@ -99,4 +99,11 @@ const { class: cls = '', size = 1000, tilt = -14, speed = 52, squash = 0.3 } = A
       animation: none;
     }
   }
+
+  /* En celulares y pantallas tactiles las orbitas se quitan: son capas enormes que giran todo el tiempo. */
+  @media (max-width: 767px), (pointer: coarse) {
+    .orbit-decor {
+      display: none;
+    }
+  }
 </style>

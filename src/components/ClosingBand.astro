@@ -9,6 +9,8 @@ import { waLink } from '@/config';
 >
   <div class="pointer-events-none absolute inset-0 -z-20 bg-gunmetal/30"></div>
   <canvas class="cb-canvas absolute inset-0 -z-10 h-full w-full" data-cb-canvas aria-hidden="true"></canvas>
+  <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-1/4 bg-gradient-to-b from-obsidian to-transparent"></div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/4 bg-gradient-to-t from-obsidian to-transparent"></div>
   <div
     class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(22,21,22,0.8)_0%,rgba(22,21,22,0.5)_40%,rgba(22,21,22,0.08)_78%,transparent_100%)]"
   >
@@ -37,8 +39,6 @@ import { waLink } from '@/config';
   .cb-canvas {
     opacity: 0;
     transition: opacity 2s cubic-bezier(0.22, 1, 0.36, 1);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
   }
 
   .cb-canvas[data-ready] {
@@ -57,7 +57,10 @@ import { waLink } from '@/config';
   const section = document.getElementById('cierre');
   const canvas = document.querySelector<HTMLCanvasElement>('[data-cb-canvas]');
 
-  if (section && canvas) {
+  // En celulares y pantallas tactiles no se crea el segundo agujero negro (ahorra GPU y bateria).
+  const light = window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768;
+
+  if (section && canvas && !light) {
     const io = new IntersectionObserver(
       (entries) => {
         if (!entries[0]?.isIntersecting) return;
