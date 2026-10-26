@@ -29,9 +29,9 @@
     text-wrap: pretty;
   }
 
+  /* El fondo (obsidian) lo pone <html>: asi el cielo fijo queda visible por detras del contenido */
   body {
     font-family: var(--font-body);
-    background-color: var(--color-obsidian);
     color: var(--color-gainsboro);
   }
 
@@ -71,6 +71,30 @@
 
   .reading-bar {
     transform-origin: left;
+  }
+
+  /* Cielo fijo detras de todo el contenido */
+  .starfield {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* Titulos que suben palabra por palabra desde una mascara */
+  .hw {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  .hw-i {
+    display: inline-block;
+    will-change: transform;
   }
 
   /* Enlace para saltar la navegación: solo aparece con el teclado */

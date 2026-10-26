@@ -30,12 +30,16 @@ import Footer from '@/components/Footer.astro';
 <script>
   import { initSmoothScroll } from '@/lib/smooth-scroll';
   import { initReveal } from '@/lib/reveal';
+  import { initHeadingReveal } from '@/lib/heading-reveal';
+  import { initStarfield } from '@/lib/starfield';
   import { initMagneticButtons } from '@/lib/magnetic';
   import { initTiltCards } from '@/lib/tilt';
   import { initCounters } from '@/lib/counters';
   import { initCometButtons } from '@/lib/comet-buttons';
 
   initSmoothScroll();
+  initStarfield();
+  initHeadingReveal();
   initReveal();
   initMagneticButtons();
   initTiltCards();

@@ -18,28 +18,39 @@ import { waLink } from '@/config';
   </div>
 
   <div class="absolute inset-0 -z-10 overflow-hidden" id="hero-visual" aria-hidden="true">
-    <div class="bh-stars absolute inset-0"></div>
+    <!-- Respaldo en CSS: se ve mientras carga el shader o si no hay WebGL -->
+    <div class="bh-css absolute inset-0 transition-opacity duration-1000" data-bh-css>
+      <div class="bh-stars absolute inset-0"></div>
 
+      <div
+        class="bh-stage absolute left-1/2 top-[94%] opacity-20 xl:left-auto xl:right-[-60px] xl:top-1/2 xl:opacity-100"
+        data-bh-stage
+      >
+        <div class="bh-glow"></div>
+
+        <div class="bh-disk-wrap" data-bh-disk>
+          <div class="bh-disk"></div>
+        </div>
+
+        <div class="bh-photon-ring"></div>
+        <div class="bh-horizon"></div>
+
+        <div class="bh-disk-wrap bh-clump-wrap" data-bh-clump>
+          <div class="bh-clump"></div>
+        </div>
+      </div>
+    </div>
+
+    <canvas class="bh-canvas absolute inset-0 h-full w-full" data-bh-canvas></canvas>
+
+    <!-- Velo para que el texto siempre se lea sobre el disco -->
     <div
-      class="bh-stage absolute left-1/2 top-[94%] opacity-20 xl:left-auto xl:right-[-60px] xl:top-1/2 xl:opacity-100"
-      data-bh-stage
+      class="absolute inset-0 bg-[linear-gradient(180deg,rgba(22,21,22,0.72)_0%,rgba(22,21,22,0.5)_58%,transparent_100%)] xl:bg-[linear-gradient(90deg,rgba(22,21,22,0.9)_0%,rgba(22,21,22,0.62)_30%,transparent_60%)]"
     >
-      <div class="bh-glow"></div>
-
-      <div class="bh-disk-wrap" data-bh-disk>
-        <div class="bh-disk"></div>
-      </div>
-
-      <div class="bh-photon-ring"></div>
-      <div class="bh-horizon"></div>
-
-      <div class="bh-disk-wrap bh-clump-wrap" data-bh-clump>
-        <div class="bh-clump"></div>
-      </div>
     </div>
   </div>
 
-  <div class="relative mx-auto w-full max-w-7xl px-5 pt-28 sm:px-8 sm:pt-24">
+  <div class="relative mx-auto w-full max-w-7xl px-5 pt-28 sm:px-8 sm:pt-24" data-hero-content>
     <div class="max-w-2xl" data-reveal-group>
       <h1
         class="text-balance font-heading text-4xl font-bold leading-[1.08] text-gainsboro sm:text-5xl lg:text-6xl"
@@ -93,6 +104,17 @@ import { waLink } from '@/config';
     Agujero negro en CSS puro: sin WebGL ni canvas, para que se vea siempre,
     sin depender de que el navegador tenga aceleración por GPU disponible.
   */
+  .bh-canvas {
+    opacity: 0;
+    transition: opacity 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 10%, #000 82%, transparent 100%);
+  }
+
+  .bh-canvas[data-ready] {
+    opacity: 1;
+  }
+
   .scroll-dot {
     animation: scroll-dot 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
   }
@@ -263,13 +285,53 @@ import { waLink } from '@/config';
 
 <script>
   import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { initBlackHole } from '@/lib/blackhole';
+
+  gsap.registerPlugin(ScrollTrigger);
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isTouch = window.matchMedia('(pointer: coarse)').matches;
 
-  // Parallax suave del agujero negro con el mouse (CSS puro, sin WebGL).
+  // Agujero negro real (shader). Si WebGL no esta disponible queda el respaldo en CSS.
+  const bhCanvas = document.querySelector<HTMLCanvasElement>('[data-bh-canvas]');
+  const bhCss = document.querySelector<HTMLElement>('[data-bh-css]');
+  const bh = bhCanvas
+    ? initBlackHole(bhCanvas, {
+        interactive: true,
+        disk: 1,
+        spin: 1,
+        layout: (aspect) =>
+          aspect >= 1.15
+            ? { dist: 25, elev: 0.12, roll: -0.15, offX: Math.min(0.5, 0.22 * aspect), offY: 0.02 }
+            : { dist: 40, elev: 0.14, roll: -0.12, offX: 0, offY: -0.36 },
+        onReady: () => {
+          bhCss?.classList.add('opacity-0');
+          window.setTimeout(() => bhCss?.classList.add('hidden'), 1200);
+        },
+      })
+    : null;
+
+  if (bh) {
+    ScrollTrigger.create({
+      trigger: '#top',
+      start: 'top top',
+      end: 'bottom top',
+      onUpdate: (self) => bh.setProgress(self.progress),
+    });
+    if (!reduceMotion) {
+      gsap.to('[data-hero-content]', {
+        yPercent: -9,
+        opacity: 0.25,
+        ease: 'none',
+        scrollTrigger: { trigger: '#top', start: 'top top', end: 'bottom top', scrub: true },
+      });
+    }
+  }
+
+  // Parallax suave del respaldo en CSS con el mouse.
   const stage = document.querySelector<HTMLElement>('[data-bh-stage]');
-  if (stage && !reduceMotion && !isTouch) {
+  if (stage && !bh && !reduceMotion && !isTouch) {
     let targetX = 0;
     let targetY = 0;
     let currentX = 0;

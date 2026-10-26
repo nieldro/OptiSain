@@ -2,22 +2,23 @@
 import { waLink } from '@/config';
 ---
 
-<section class="relative isolate overflow-hidden py-24 sm:py-32" aria-label="Contáctanos por WhatsApp">
-  <div class="pointer-events-none absolute inset-0 -z-10 bg-gunmetal/40"></div>
+<section
+  id="cierre"
+  class="relative isolate overflow-hidden py-28 sm:py-40"
+  aria-label="Contáctanos por WhatsApp"
+>
+  <div class="pointer-events-none absolute inset-0 -z-20 bg-gunmetal/30"></div>
+  <canvas class="cb-canvas absolute inset-0 -z-10 h-full w-full" data-cb-canvas aria-hidden="true"></canvas>
   <div
-    class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2"
-    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(22,21,22,0.8)_0%,rgba(22,21,22,0.5)_40%,rgba(22,21,22,0.08)_78%,transparent_100%)]"
   >
-    <div class="orbit-ring absolute inset-0 rounded-full border border-gray/40"></div>
-    <div class="orbit-ring-2 absolute inset-[12%] rounded-full border border-silver/30"></div>
-    <div class="orbit-ring-3 absolute inset-[24%] rounded-full border border-gainsboro/20"></div>
   </div>
 
   <div class="relative mx-auto max-w-3xl px-5 text-center sm:px-8" data-reveal-group>
-    <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+    <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-5xl" data-reveal>
       ¿Listo para poner tu negocio en órbita?
     </h2>
-    <p class="mt-4 text-lg text-silver" data-reveal>
+    <p class="mt-5 text-lg text-silver" data-reveal>
       Cuéntanos qué necesitas y en 15 minutos te decimos cómo lo resolvemos.
     </p>
     <a
@@ -27,7 +28,7 @@ import { waLink } from '@/config';
       data-magnetic
       data-comet
       data-reveal
-      class="relative mt-9 inline-flex items-center gap-2 overflow-hidden rounded-full bg-amber px-8 py-4 text-base font-semibold text-obsidian shadow-[0_14px_32px_-14px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
+      class="relative mt-10 inline-flex items-center gap-2 overflow-hidden rounded-full bg-amber px-8 py-4 text-base font-semibold text-obsidian shadow-[0_14px_32px_-14px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
     >
       Escríbenos por WhatsApp
     </a>
@@ -35,33 +36,55 @@ import { waLink } from '@/config';
 </section>
 
 <style>
-  .orbit-ring,
-  .orbit-ring-2,
-  .orbit-ring-3 {
-    animation: orbit-spin linear infinite;
-  }
-  .orbit-ring {
-    animation-duration: 60s;
-  }
-  .orbit-ring-2 {
-    animation-duration: 45s;
-    animation-direction: reverse;
-  }
-  .orbit-ring-3 {
-    animation-duration: 30s;
+  .cb-canvas {
+    opacity: 0;
+    transition: opacity 2s cubic-bezier(0.22, 1, 0.36, 1);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
   }
 
-  @keyframes orbit-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .orbit-ring,
-    .orbit-ring-2,
-    .orbit-ring-3 {
-      animation: none;
-    }
+  .cb-canvas[data-ready] {
+    opacity: 1;
   }
 </style>
+
+<script>
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import gsap from 'gsap';
+  import { initBlackHole } from '@/lib/blackhole';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // El segundo agujero negro solo se crea cuando la seccion esta por llegar.
+  const section = document.getElementById('cierre');
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-cb-canvas]');
+
+  if (section && canvas) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        io.disconnect();
+
+        const bh = initBlackHole(canvas, {
+          disk: 0.75,
+          spin: 0.8,
+          layout: (aspect) =>
+            aspect >= 1.2
+              ? { dist: 18, elev: 0.1, roll: -0.05, offX: 0, offY: 0 }
+              : { dist: 34, elev: 0.12, roll: -0.05, offX: 0, offY: 0 },
+        });
+
+        if (bh) {
+          ScrollTrigger.create({
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            onUpdate: (self) => bh.setProgress(self.progress),
+          });
+        }
+      },
+      { rootMargin: '400px' }
+    );
+    io.observe(section);
+  }
+</script>
