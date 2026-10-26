@@ -1,0 +1,38 @@
+---
+import { faqs } from '@/data/site';
+---
+
+<section id="preguntas" class="relative py-24 sm:py-32" aria-label="Preguntas frecuentes">
+  <div class="mx-auto max-w-3xl px-5 sm:px-8">
+    <div class="text-center" data-reveal-group>
+      <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+        Resolvemos tus dudas
+      </h2>
+    </div>
+
+    <div class="mt-12 divide-y divide-gray/25 border-y border-gray/25" data-reveal-group>
+      {
+        faqs.map((faq, i) => (
+          <details class="group py-5" data-reveal name="faq">
+            <summary
+              class="flex cursor-pointer list-none items-center justify-between gap-4 font-heading text-base font-semibold text-gainsboro marker:content-none"
+            >
+              <span>{faq.question}</span>
+              <svg
+                class="h-5 w-5 shrink-0 text-silver transition-all duration-300 group-open:rotate-45 group-open:text-amber"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                aria-hidden="true"
+              >
+                <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+              </svg>
+            </summary>
+            <p class="mt-3 pr-8 text-silver">{faq.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

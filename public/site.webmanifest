@@ -1,0 +1,28 @@
+{
+  "name": "OptiSain",
+  "short_name": "OptiSain",
+  "description": "Webs, tiendas online, chatbots con IA, automatizaciones y datos para negocios en Colombia y Latinoamérica.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#161516",
+  "theme_color": "#161516",
+  "lang": "es-CO",
+  "icons": [
+    {
+      "src": "/iconos/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/iconos/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/iconos/apple-touch-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+CÓMO USAR ESTE PAQUETE CON CLAUDE CODE
+
+1. Descomprime el ZIP. Queda una carpeta "optisain-web-claude-code".
+2. Instala Node.js (versión 20 o más nueva) desde nodejs.org si no lo tienes.
+3. Abre esa carpeta en Claude Code:
+   - En la app de escritorio de Claude: abre Claude Code y elige esta carpeta.
+   - O en una terminal: entra a la carpeta y escribe  claude
+4. Abre el archivo PROMPT.md, copia todo su contenido y pégalo en Claude Code.
+5. Acepta los permisos que te pida (instalar paquetes, crear archivos). Al final te dirá cómo verla en tu navegador.
+
+Qué hay en la carpeta
+- PROMPT.md: la instrucción principal para Claude Code.
+- CLAUDE.md: reglas de la marca. Claude Code lo lee solo cada vez que abres la carpeta.
+- contenido/: los 15 servicios (sin precios) y todos los textos, preguntas frecuentes y SEO.
+- marca/: logo en vector (SVG) e íconos.
+
+Antes de publicar, cambia en src/config.ts tu número de WhatsApp, correo, Instagram y dominio.
+Para hacer cambios después, solo pídeselos a Claude Code en la misma carpeta (por ejemplo: "cambia el texto del hero por...").

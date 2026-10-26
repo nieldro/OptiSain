@@ -1,0 +1,51 @@
+---
+import Icon from '@/components/Icon.astro';
+import { whyPoints } from '@/data/site';
+---
+
+<section id="por-que-optisain" class="relative py-24 sm:py-32" aria-label="Por qué OptiSain">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="mx-auto max-w-2xl text-center" data-reveal-group>
+      <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+        Un solo aliado para todo lo digital
+      </h2>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      {
+        whyPoints.map((point) => (
+          <div class="text-center sm:text-left" data-reveal>
+            <div class="relative mx-auto flex h-14 w-14 items-center justify-center sm:mx-0">
+              <div class="why-orbit pointer-events-none absolute inset-[-7px] rounded-full" aria-hidden="true">
+                <span class="why-orbit-dot absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-amber shadow-[0_0_6px_2px_rgba(255,181,71,0.55)]"></span>
+              </div>
+              <div class="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gunmetal/50 text-gainsboro">
+                <Icon name={point.icon} class="h-7 w-7" />
+              </div>
+            </div>
+            <h3 class="mt-5 font-heading text-lg font-semibold text-gainsboro">{point.title}</h3>
+            <p class="mt-2 text-sm text-silver">{point.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .why-orbit {
+    animation: why-spin 7s linear infinite;
+  }
+
+  @keyframes why-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .why-orbit {
+      animation: none;
+    }
+  }
+</style>

@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-obsidian: #161516;
+  --color-gunmetal: #2c4057;
+  --color-gainsboro: #d3d8e2;
+  --color-silver: #939baa;
+  --color-gray: #606a7a;
+  --color-amber: #ffb547;
+
+  --font-heading: 'Lexend', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+}
+
+@layer base {
+  * {
+    scrollbar-color: var(--color-gray) var(--color-obsidian);
+  }
+
+  html {
+    background-color: var(--color-obsidian);
+    color-scheme: dark;
+    /* El header es fijo: sin esto las anclas dejan el título tapado */
+    scroll-padding-top: 5rem;
+  }
+
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-obsidian);
+    color: var(--color-gainsboro);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background-color: var(--color-amber);
+    color: var(--color-obsidian);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Ruido/grano sutil sobre el fondo obsidian */
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .reading-bar {
+    transform-origin: left;
+  }
+
+  /* Enlace para saltar la navegación: solo aparece con el teclado */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 70;
+    border-radius: 9999px;
+    background: var(--color-amber);
+    padding: 0.625rem 1.25rem;
+    font-weight: 600;
+    color: var(--color-obsidian);
+    transition: top 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Chispas que siguen al cursor sobre los botones ámbar principales */
+  .comet-spark {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(22, 21, 22, 0.85), rgba(22, 21, 22, 0) 70%);
+    pointer-events: none;
+    animation: comet-fade 0.55s ease-out forwards;
+  }
+
+  @keyframes comet-fade {
+    to {
+      transform: scale(0.15);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+

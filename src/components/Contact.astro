@@ -1,0 +1,176 @@
+---
+import Icon from '@/components/Icon.astro';
+import { services } from '@/data/services';
+import {
+  CONTACT_EMAIL,
+  INSTAGRAM_URL,
+  INSTAGRAM_HANDLE,
+  WHATSAPP_DISPLAY,
+  waLink,
+} from '@/config';
+---
+
+<section id="contacto" class="relative py-24 sm:py-32" aria-label="Contacto">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8">
+    <div class="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.2fr]">
+      <div data-reveal-group>
+        <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+          Hablemos de tu proyecto
+        </h2>
+        <p class="mt-4 text-silver" data-reveal>
+          Escríbenos y te respondemos el mismo día. También puedes encontrarnos aquí:
+        </p>
+
+        <ul class="mt-8 space-y-4" data-reveal>
+          <li class="flex items-center gap-3 text-gainsboro">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
+              <Icon name="mail" class="h-5 w-5" />
+            </span>
+            <a href={`mailto:${CONTACT_EMAIL}`} class="py-2 hover:text-amber">{CONTACT_EMAIL}</a>
+          </li>
+          <li class="flex items-center gap-3 text-gainsboro">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
+              <Icon name="instagram" class="h-5 w-5" />
+            </span>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" class="py-2 hover:text-amber">
+              {INSTAGRAM_HANDLE}
+            </a>
+          </li>
+          <li class="flex items-center gap-3 text-gainsboro">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gunmetal/50 text-gainsboro" aria-hidden="true">
+              <Icon name="whatsapp" class="h-5 w-5" />
+            </span>
+            <a
+              href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="py-2 hover:text-amber"
+            >
+              {WHATSAPP_DISPLAY}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <form
+        id="contact-form"
+        class="space-y-5 rounded-2xl border border-gray/50 bg-gunmetal/25 p-6 sm:p-8"
+        data-reveal-solo
+        novalidate
+      >
+        <div>
+          <label for="name" class="mb-1.5 block text-sm font-medium text-silver">Nombre</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            autocomplete="name"
+            aria-describedby="err-name"
+            class="w-full rounded-lg border border-gray/40 bg-obsidian/60 px-4 py-3 text-gainsboro placeholder:text-silver focus:border-amber aria-[invalid=true]:border-amber"
+            placeholder="Tu nombre"
+          />
+          <p id="err-name" class="mt-1 hidden text-sm text-amber" data-error-for="name">Escribe tu nombre.</p>
+        </div>
+
+        <div>
+          <label for="whatsapp" class="mb-1.5 block text-sm font-medium text-silver">WhatsApp</label>
+          <input
+            id="whatsapp"
+            name="whatsapp"
+            type="tel"
+            required
+            autocomplete="tel"
+            inputmode="tel"
+            aria-describedby="err-whatsapp"
+            class="w-full rounded-lg border border-gray/40 bg-obsidian/60 px-4 py-3 text-gainsboro placeholder:text-silver focus:border-amber aria-[invalid=true]:border-amber"
+            placeholder="+57 300 000 0000"
+          />
+          <p id="err-whatsapp" class="mt-1 hidden text-sm text-amber" data-error-for="whatsapp">Escribe un WhatsApp válido.</p>
+        </div>
+
+        <div>
+          <label for="service" class="mb-1.5 block text-sm font-medium text-silver">
+            Servicio que te interesa
+          </label>
+          <select
+            id="service"
+            name="service"
+            required
+            aria-describedby="err-service"
+            class="w-full rounded-lg border border-gray/40 bg-obsidian/60 px-4 py-3 text-gainsboro focus:border-amber aria-[invalid=true]:border-amber"
+          >
+            <option value="" selected disabled>Selecciona un servicio</option>
+            {services.map((s) => <option value={s.name}>{s.name}</option>)}
+            <option value="No estoy seguro">No estoy seguro</option>
+          </select>
+          <p id="err-service" class="mt-1 hidden text-sm text-amber" data-error-for="service">Selecciona un servicio.</p>
+        </div>
+
+        <div>
+          <label for="message" class="mb-1.5 block text-sm font-medium text-silver">Mensaje</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            class="w-full rounded-lg border border-gray/40 bg-obsidian/60 px-4 py-3 text-gainsboro placeholder:text-silver focus:border-amber"
+            placeholder="Cuéntanos un poco más (opcional)"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          data-magnetic
+          data-magnetic-strength="0.15"
+          data-comet
+          class="relative flex w-full items-center justify-center overflow-hidden rounded-full bg-amber px-7 py-3.5 text-base font-semibold text-obsidian transition-transform hover:scale-[1.01] sm:inline-flex sm:w-auto"
+        >
+          Enviar por WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { waLink } from '@/config';
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim();
+    const whatsapp = (form.elements.namedItem('whatsapp') as HTMLInputElement).value.trim();
+    const service = (form.elements.namedItem('service') as HTMLSelectElement).value;
+    const message = (form.elements.namedItem('message') as HTMLTextAreaElement).value.trim();
+
+    let valid = true;
+    let firstInvalid: HTMLElement | null = null;
+    const setError = (field: string, show: boolean) => {
+      const el = form.querySelector(`[data-error-for="${field}"]`);
+      el?.classList.toggle('hidden', !show);
+      const input = form.elements.namedItem(field) as HTMLElement | null;
+      input?.setAttribute('aria-invalid', String(show));
+      if (show) {
+        valid = false;
+        firstInvalid ??= input;
+      }
+    };
+
+    setError('name', name.length === 0);
+    setError('whatsapp', whatsapp.replace(/[^0-9+]/g, '').length < 7);
+    setError('service', service.length === 0);
+
+    if (!valid) {
+      firstInvalid?.focus();
+      return;
+    }
+
+    const text = `Hola OptiSain, soy ${name}. Me interesa ${service}.${
+      message ? ` ${message}` : ''
+    } Mi WhatsApp: ${whatsapp}.`;
+
+    window.open(waLink(text), '_blank', 'noopener,noreferrer');
+  });
+</script>

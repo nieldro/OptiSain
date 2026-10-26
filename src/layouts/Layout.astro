@@ -1,0 +1,105 @@
+---
+import '@/styles/global.css';
+import { SITE_URL, SITE_NAME, INSTAGRAM_URL } from '@/config';
+import { services } from '@/data/services';
+import { faqs } from '@/data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'OptiSain | Páginas web, tiendas online, chatbots y automatización en Colombia',
+  description = 'Estudio digital en Colombia. Creamos páginas web, tiendas online, chatbots con IA, automatizaciones y dashboards para que tu negocio venda más. Cotiza gratis.',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
+const ogImage = new URL('/og.jpg', SITE_URL).toString();
+
+const professionalService = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: new URL('/logo/optisain-logo-gainsboro.svg', SITE_URL).toString(),
+  areaServed: 'Colombia',
+  sameAs: [INSTAGRAM_URL],
+};
+
+const offerCatalog = {
+  '@context': 'https://schema.org',
+  '@type': 'OfferCatalog',
+  name: 'Servicios OptiSain',
+  itemListElement: services.map((s) => ({
+    '@type': 'Offer',
+    itemOffered: {
+      '@type': 'Service',
+      name: s.name,
+      description: s.summary,
+    },
+  })),
+};
+
+const faqPage = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.answer,
+    },
+  })),
+};
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="diseño de páginas web Colombia, tienda online Colombia, chatbot WhatsApp con IA, automatización de procesos, dashboards Power BI, agencia de marketing digital Colombia, SEO local Google Business"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_CO" />
+    <meta property="og:site_name" content={SITE_NAME} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/iconos/apple-touch-icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#161516" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@600;700&family=Manrope:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(professionalService)} />
+    <script type="application/ld+json" set:html={JSON.stringify(offerCatalog)} />
+    <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />
+  </head>
+  <body class="bg-obsidian text-gainsboro font-body antialiased">
+    <a href="#contenido" class="skip-link">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>

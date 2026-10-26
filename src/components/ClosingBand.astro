@@ -1,0 +1,67 @@
+---
+import { waLink } from '@/config';
+---
+
+<section class="relative isolate overflow-hidden py-24 sm:py-32" aria-label="Contáctanos por WhatsApp">
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-gunmetal/40"></div>
+  <div
+    class="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[140%] w-[140%] -translate-x-1/2 -translate-y-1/2"
+    aria-hidden="true"
+  >
+    <div class="orbit-ring absolute inset-0 rounded-full border border-gray/40"></div>
+    <div class="orbit-ring-2 absolute inset-[12%] rounded-full border border-silver/30"></div>
+    <div class="orbit-ring-3 absolute inset-[24%] rounded-full border border-gainsboro/20"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-3xl px-5 text-center sm:px-8" data-reveal-group>
+    <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+      ¿Listo para poner tu negocio en órbita?
+    </h2>
+    <p class="mt-4 text-lg text-silver" data-reveal>
+      Cuéntanos qué necesitas y en 15 minutos te decimos cómo lo resolvemos.
+    </p>
+    <a
+      href={waLink('Hola OptiSain, quiero poner mi negocio en órbita.')}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-magnetic
+      data-comet
+      data-reveal
+      class="relative mt-9 inline-flex items-center gap-2 overflow-hidden rounded-full bg-amber px-8 py-4 text-base font-semibold text-obsidian shadow-[0_14px_32px_-14px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
+    >
+      Escríbenos por WhatsApp
+    </a>
+  </div>
+</section>
+
+<style>
+  .orbit-ring,
+  .orbit-ring-2,
+  .orbit-ring-3 {
+    animation: orbit-spin linear infinite;
+  }
+  .orbit-ring {
+    animation-duration: 60s;
+  }
+  .orbit-ring-2 {
+    animation-duration: 45s;
+    animation-direction: reverse;
+  }
+  .orbit-ring-3 {
+    animation-duration: 30s;
+  }
+
+  @keyframes orbit-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orbit-ring,
+    .orbit-ring-2,
+    .orbit-ring-3 {
+      animation: none;
+    }
+  }
+</style>

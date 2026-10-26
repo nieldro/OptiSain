@@ -1,0 +1,317 @@
+---
+import { waLink } from '@/config';
+---
+
+<section
+  id="top"
+  class="relative isolate flex min-h-[100svh] items-center overflow-hidden"
+  aria-label="Presentación"
+>
+  <div class="grain absolute inset-0 -z-20"></div>
+  <div
+    class="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_top,_rgba(44,64,87,0.55),_transparent_60%)]"
+  >
+  </div>
+  <div
+    class="absolute inset-0 -z-20 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,181,71,0.08),_transparent_55%)]"
+  >
+  </div>
+
+  <div class="absolute inset-0 -z-10 overflow-hidden" id="hero-visual" aria-hidden="true">
+    <div class="bh-stars absolute inset-0"></div>
+
+    <div
+      class="bh-stage absolute left-1/2 top-[94%] opacity-20 xl:left-auto xl:right-[-60px] xl:top-1/2 xl:opacity-100"
+      data-bh-stage
+    >
+      <div class="bh-glow"></div>
+
+      <div class="bh-disk-wrap" data-bh-disk>
+        <div class="bh-disk"></div>
+      </div>
+
+      <div class="bh-photon-ring"></div>
+      <div class="bh-horizon"></div>
+
+      <div class="bh-disk-wrap bh-clump-wrap" data-bh-clump>
+        <div class="bh-clump"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative mx-auto w-full max-w-7xl px-5 pt-28 sm:px-8 sm:pt-24">
+    <div class="max-w-2xl" data-reveal-group>
+      <h1
+        class="text-balance font-heading text-4xl font-bold leading-[1.08] text-gainsboro sm:text-5xl lg:text-6xl"
+        data-reveal
+        data-hero-title
+      >
+        Tu negocio, en <span class="text-amber">órbita</span>.
+      </h1>
+
+      <p class="mt-6 max-w-xl text-balance text-lg text-silver sm:text-xl" data-reveal>
+        Webs, tiendas online, chatbots con IA, automatizaciones y datos para negocios en
+        Colombia y Latinoamérica. Tú vendes; nosotros hacemos que todo funcione.
+      </p>
+
+      <div class="mt-9 flex flex-wrap items-center gap-4" data-reveal>
+        <a
+          href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-magnetic
+          data-comet
+          class="relative inline-flex items-center overflow-hidden rounded-full bg-amber px-7 py-3.5 text-base font-semibold text-obsidian shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)] transition-transform hover:scale-[1.03]"
+        >
+          Cotiza tu proyecto
+        </a>
+        <a
+          href="#servicios"
+          data-magnetic
+          data-magnetic-strength="0.2"
+          class="inline-flex items-center rounded-full border border-gray/50 px-7 py-3.5 text-base font-semibold text-gainsboro transition-colors hover:border-gainsboro"
+        >
+          Ver servicios
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="pointer-events-none absolute bottom-8 left-1/2 hidden -translate-x-1/2 text-silver/70 [@media(pointer:fine)]:block"
+    aria-hidden="true"
+  >
+    <svg width="20" height="32" viewBox="0 0 20 32" fill="none">
+      <rect x="1" y="1" width="18" height="30" rx="9" stroke="currentColor" stroke-width="1.5" />
+      <circle cx="10" cy="9" r="2.5" fill="currentColor" class="scroll-dot" />
+    </svg>
+  </div>
+</section>
+
+<style>
+  /*
+    Agujero negro en CSS puro: sin WebGL ni canvas, para que se vea siempre,
+    sin depender de que el navegador tenga aceleración por GPU disponible.
+  */
+  .scroll-dot {
+    animation: scroll-dot 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  @keyframes scroll-dot {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    70%,
+    100% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+  }
+
+  .bh-stage {
+    --bh-size: 300px;
+    --bh-tx: -50%;
+    width: var(--bh-size);
+    height: var(--bh-size);
+    transform: translate(var(--bh-tx), -50%) translate3d(var(--bh-px, 0px), var(--bh-py, 0px), 0);
+    perspective: 900px;
+  }
+
+  /* A partir de xl hay espacio suficiente para que no choque con el texto (columna fija ~700px);
+     por eso se ancla al borde derecho en vez de usar un porcentaje del viewport. */
+  @media (min-width: 1280px) {
+    .bh-stage {
+      --bh-size: 480px;
+      --bh-tx: 0%;
+    }
+  }
+
+  .bh-glow {
+    position: absolute;
+    inset: -25%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(44, 64, 87, 0.65), transparent 65%);
+    animation: bh-pulse 5s ease-in-out infinite;
+  }
+
+  .bh-disk-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+    transform: rotateX(68deg) rotate(-12deg);
+  }
+
+  .bh-disk {
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    background: conic-gradient(
+      from 0deg,
+      #ffb547 0deg,
+      #d3d8e2 55deg,
+      #939baa 120deg,
+      #2c4057 180deg,
+      #939baa 240deg,
+      #d3d8e2 300deg,
+      #ffb547 360deg
+    );
+    -webkit-mask-image: radial-gradient(
+      circle,
+      transparent 0%,
+      transparent 34%,
+      black 36%,
+      black 92%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle,
+      transparent 0%,
+      transparent 34%,
+      black 36%,
+      black 92%,
+      transparent 100%
+    );
+    animation: bh-spin 16s linear infinite;
+    filter: saturate(1.1);
+  }
+
+  .bh-clump-wrap {
+    animation: bh-spin 4s linear infinite;
+  }
+
+  .bh-clump {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: #ffb547;
+    box-shadow: 0 0 18px 6px rgba(255, 181, 71, 0.85);
+    transform: translate(-50%, -50%) translateX(calc(var(--bh-size) * 0.32));
+  }
+
+  .bh-horizon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 38%;
+    height: 38%;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 38% 35%, #14181d 0%, #0a090a 55%, #050505 100%);
+    transform: translate(-50%, -50%);
+  }
+
+  .bh-photon-ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 40%;
+    height: 40%;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 2px rgba(255, 181, 71, 0.9), 0 0 22px 6px rgba(255, 181, 71, 0.55),
+      0 0 46px 16px rgba(255, 181, 71, 0.25);
+  }
+
+  .bh-stars {
+    background-image: radial-gradient(1.5px 1.5px at 10% 20%, #d3d8e2 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 82% 15%, #d3d8e2 50%, transparent 100%),
+      radial-gradient(1px 1px at 60% 8%, #939baa 50%, transparent 100%),
+      radial-gradient(1px 1px at 30% 70%, #939baa 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 90% 60%, #d3d8e2 50%, transparent 100%),
+      radial-gradient(1px 1px at 15% 85%, #939baa 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 90%, #d3d8e2 50%, transparent 100%),
+      radial-gradient(1px 1px at 70% 40%, #939baa 50%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 25% 45%, #d3d8e2 50%, transparent 100%),
+      radial-gradient(1px 1px at 95% 85%, #939baa 50%, transparent 100%);
+    background-repeat: repeat;
+    background-size: 340px 340px;
+    opacity: 0.6;
+  }
+
+  @keyframes bh-spin {
+    to {
+      transform: rotateX(68deg) rotate(calc(-12deg + 360deg));
+    }
+  }
+  @keyframes bh-pulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.06);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bh-disk,
+    .bh-clump-wrap,
+    .bh-glow,
+    .scroll-dot {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+
+  // Parallax suave del agujero negro con el mouse (CSS puro, sin WebGL).
+  const stage = document.querySelector<HTMLElement>('[data-bh-stage]');
+  if (stage && !reduceMotion && !isTouch) {
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        targetX = ((e.clientX / window.innerWidth) * 2 - 1) * 24;
+        targetY = ((e.clientY / window.innerHeight) * 2 - 1) * 16;
+      },
+      { passive: true }
+    );
+
+    function tick() {
+      currentX += (targetX - currentX) * 0.06;
+      currentY += (targetY - currentY) * 0.06;
+      stage.style.setProperty('--bh-px', `${currentX}px`);
+      stage.style.setProperty('--bh-py', `${currentY}px`);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const title = document.querySelector('[data-hero-title]');
+  if (title && !reduceMotion) {
+    const words = ['Tu', 'negocio,', 'en', '<span class="text-amber">órbita</span>.'];
+    title.innerHTML = words
+      .map(
+        (word) =>
+          `<span class="inline-block overflow-hidden align-bottom"><span class="inline-block will-change-transform" data-word>${word}</span></span>`
+      )
+      .join(' ');
+
+    const wordEls = title.querySelectorAll('[data-word]');
+    gsap.set(wordEls, { yPercent: 110 });
+    gsap.to(wordEls, {
+      yPercent: 0,
+      duration: 0.9,
+      ease: 'power4.out',
+      stagger: 0.07,
+      delay: 0.2,
+    });
+  }
+</script>

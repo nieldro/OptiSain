@@ -1,0 +1,44 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Hero from '@/components/Hero.astro';
+import Marquee from '@/components/Marquee.astro';
+import Services from '@/components/Services.astro';
+import HowWeWork from '@/components/HowWeWork.astro';
+import WhyOptisain from '@/components/WhyOptisain.astro';
+import ClosingBand from '@/components/ClosingBand.astro';
+import Faq from '@/components/Faq.astro';
+import Contact from '@/components/Contact.astro';
+import Footer from '@/components/Footer.astro';
+---
+
+<Layout>
+  <Header />
+  <main id="contenido">
+    <Hero />
+    <Marquee />
+    <Services />
+    <HowWeWork />
+    <WhyOptisain />
+    <ClosingBand />
+    <Faq />
+    <Contact />
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  import { initSmoothScroll } from '@/lib/smooth-scroll';
+  import { initReveal } from '@/lib/reveal';
+  import { initMagneticButtons } from '@/lib/magnetic';
+  import { initTiltCards } from '@/lib/tilt';
+  import { initCounters } from '@/lib/counters';
+  import { initCometButtons } from '@/lib/comet-buttons';
+
+  initSmoothScroll();
+  initReveal();
+  initMagneticButtons();
+  initTiltCards();
+  initCounters();
+  initCometButtons();
+</script>

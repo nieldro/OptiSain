@@ -1,0 +1,166 @@
+---
+import { navLinks } from '@/data/site';
+import { waLink } from '@/config';
+---
+
+<header
+  id="site-header"
+  class="fixed inset-x-0 top-0 z-50 transition-colors duration-300"
+  data-header
+>
+  <div
+    class="absolute inset-0 -z-10 border-b border-gray/0 bg-obsidian/0 backdrop-blur-0 transition-all duration-300"
+    data-header-bg
+  >
+  </div>
+  <div class="h-[3px] w-full bg-transparent">
+    <div
+      id="reading-bar"
+      class="reading-bar h-full w-full origin-left scale-x-0 bg-amber"
+    >
+    </div>
+  </div>
+
+  <nav
+    class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8"
+    aria-label="Principal"
+  >
+    <a href="#top" class="flex items-center gap-2" aria-label="OptiSain, inicio">
+      <img
+        src="/logo/optisain-logo-gainsboro.svg"
+        alt="OptiSain"
+        class="h-8 w-auto sm:h-9"
+        width="140"
+        height="36"
+      />
+    </a>
+
+    <ul class="hidden items-center gap-8 md:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-sm font-medium text-silver transition-colors hover:text-gainsboro"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="hidden md:block">
+      <a
+        href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-magnetic
+        data-comet
+        class="relative inline-flex items-center overflow-hidden rounded-full bg-amber px-5 py-2.5 text-sm font-semibold text-obsidian transition-transform hover:scale-[1.03]"
+      >
+        Cotiza tu proyecto
+      </a>
+    </div>
+
+    <button
+      id="menu-toggle"
+      type="button"
+      class="relative flex h-11 w-11 flex-col items-center justify-center gap-1.5 md:hidden"
+      aria-label="Abrir menú"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <span class="h-0.5 w-6 rounded-full bg-gainsboro transition-all" data-bar="1"></span>
+      <span class="h-0.5 w-6 rounded-full bg-gainsboro transition-all" data-bar="2"></span>
+      <span class="h-0.5 w-6 rounded-full bg-gainsboro transition-all" data-bar="3"></span>
+    </button>
+  </nav>
+
+  <div
+    id="mobile-menu"
+    class="invisible fixed inset-0 top-0 z-40 flex flex-col items-center justify-center gap-8 bg-obsidian/98 opacity-0 backdrop-blur-md transition-all duration-300 md:hidden"
+    data-mobile-menu
+  >
+    <ul class="flex flex-col items-center gap-6">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href} class="text-2xl font-heading font-semibold text-gainsboro" data-menu-link>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <a
+      href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center rounded-full bg-amber px-6 py-3 text-base font-semibold text-obsidian"
+      data-menu-link
+    >
+      Cotiza tu proyecto
+    </a>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector('[data-header]');
+  const headerBg = document.querySelector('[data-header-bg]');
+  const readingBar = document.getElementById('reading-bar');
+  const toggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.querySelector('[data-mobile-menu]');
+  const bars = toggle?.querySelectorAll('[data-bar]');
+  let menuOpen = false;
+
+  function updateOnScroll() {
+    const y = window.scrollY;
+    if (y > 40) {
+      headerBg?.classList.add('bg-obsidian/70', 'backdrop-blur-xl', 'border-gray/30');
+    } else {
+      headerBg?.classList.remove('bg-obsidian/70', 'backdrop-blur-xl', 'border-gray/30');
+    }
+
+    const doc = document.documentElement;
+    const scrollable = doc.scrollHeight - doc.clientHeight;
+    const progress = scrollable > 0 ? Math.min(y / scrollable, 1) : 0;
+    if (readingBar) {
+      readingBar.style.transform = `scaleX(${progress})`;
+    }
+  }
+
+  window.addEventListener('scroll', updateOnScroll, { passive: true });
+  window.addEventListener('optisain:scroll', updateOnScroll);
+  updateOnScroll();
+
+  function setMenu(open: boolean) {
+    menuOpen = open;
+    toggle?.setAttribute('aria-expanded', String(open));
+    toggle?.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    if (mobileMenu) {
+      mobileMenu.classList.toggle('opacity-100', open);
+      mobileMenu.classList.toggle('invisible', !open);
+      mobileMenu.classList.toggle('opacity-0', !open);
+    }
+    if (bars && bars.length === 3) {
+      bars[0].classList.toggle('translate-y-2', open);
+      bars[0].classList.toggle('rotate-45', open);
+      bars[1].classList.toggle('opacity-0', open);
+      bars[2].classList.toggle('-translate-y-2', open);
+      bars[2].classList.toggle('-rotate-45', open);
+    }
+    document.body.classList.toggle('overflow-hidden', open);
+  }
+
+  toggle?.addEventListener('click', () => setMenu(!menuOpen));
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuOpen) {
+      setMenu(false);
+      toggle?.focus();
+    }
+  });
+  document.querySelectorAll('[data-menu-link]').forEach((link) => {
+    link.addEventListener('click', () => setMenu(false));
+  });
+</script>

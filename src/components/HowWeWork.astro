@@ -1,0 +1,109 @@
+---
+import { steps } from '@/data/site';
+---
+
+<section id="como-trabajamos" class="relative py-24 sm:py-32" aria-label="Cómo trabajamos">
+  <div class="mx-auto max-w-5xl px-5 sm:px-8">
+    <div class="mx-auto max-w-2xl text-center" data-reveal-group>
+      <h2 class="text-balance font-heading text-3xl font-bold text-gainsboro sm:text-4xl" data-reveal>
+        Un proceso claro, de principio a fin
+      </h2>
+    </div>
+
+    <div class="relative mt-16">
+      <svg
+        class="absolute left-1/2 top-0 hidden h-full w-2 -translate-x-1/2 md:block"
+        viewBox="0 0 4 800"
+        preserveAspectRatio="none"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M2 0 C 2 100, 2 100, 2 800"
+          stroke="#606a7a"
+          stroke-width="2"
+          stroke-dasharray="6 8"
+          opacity="0.4"
+        />
+        <path
+          id="orbit-path"
+          d="M2 0 C 2 100, 2 100, 2 800"
+          stroke="#ffb547"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+      </svg>
+
+      <ol class="relative flex flex-col gap-10 md:gap-14" data-reveal-group>
+        {
+          steps.map((step, i) => (
+            <li
+              class:list={[
+                'relative flex flex-col gap-4 md:flex-row md:items-center',
+                i % 2 === 1 ? 'md:flex-row-reverse' : '',
+              ]}
+              data-reveal
+              data-step
+            >
+              <div class="md:w-1/2" class:list={[i % 2 === 1 ? 'md:pl-14 md:text-left' : 'md:pr-14 md:text-right']}>
+                <span class="font-heading text-sm font-semibold text-silver">
+                  Paso {i + 1}
+                </span>
+                <h3 class="mt-1 font-heading text-xl font-semibold text-gainsboro">{step.title}</h3>
+                <p class="mt-2 text-silver">{step.text}</p>
+              </div>
+
+              <div class="relative z-10 mx-auto flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-gray/50 bg-obsidian text-sm font-bold text-silver transition-colors duration-500 md:mx-0" data-step-dot>
+                {i + 1}
+              </div>
+
+              <div class="hidden md:block md:w-1/2" aria-hidden="true" />
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const path = document.getElementById('orbit-path') as SVGPathElement | null;
+  const steps = document.querySelectorAll<HTMLElement>('[data-step]');
+
+  if (path) {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = `${length}`;
+    path.style.strokeDashoffset = reduceMotion ? '0' : `${length}`;
+
+    if (!reduceMotion) {
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: path.closest('section'),
+          start: 'top 70%',
+          end: 'bottom 80%',
+          scrub: 0.6,
+        },
+      });
+    }
+  }
+
+  steps.forEach((step) => {
+    const dot = step.querySelector<HTMLElement>('[data-step-dot]');
+    if (!dot) return;
+    ScrollTrigger.create({
+      trigger: step,
+      start: 'top 65%',
+      onEnter: () => {
+        dot.classList.add('border-amber', 'text-amber', 'shadow-[0_0_0_6px_rgba(255,181,71,0.15)]');
+      },
+    });
+  });
+</script>
