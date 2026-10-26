@@ -203,6 +203,37 @@ void main() {
 }
 `;
 
+// Segundo paso: suaviza bordes (FXAA) para que la sombra y el disco no salgan escalonados.
+const FRAG_POST = `
+precision highp float;
+uniform sampler2D uTex;
+uniform vec2 uRes;
+
+void main() {
+  vec2 inv = 1.0 / uRes;
+  vec2 uv = gl_FragCoord.xy * inv;
+  vec3 nw = texture2D(uTex, uv + vec2(-1.0, -1.0) * inv).rgb;
+  vec3 ne = texture2D(uTex, uv + vec2( 1.0, -1.0) * inv).rgb;
+  vec3 sw = texture2D(uTex, uv + vec2(-1.0,  1.0) * inv).rgb;
+  vec3 se = texture2D(uTex, uv + vec2( 1.0,  1.0) * inv).rgb;
+  vec3 m  = texture2D(uTex, uv).rgb;
+  vec3 L = vec3(0.299, 0.587, 0.114);
+  float lNW = dot(nw, L), lNE = dot(ne, L), lSW = dot(sw, L), lSE = dot(se, L), lM = dot(m, L);
+  float lMin = min(lM, min(min(lNW, lNE), min(lSW, lSE)));
+  float lMax = max(lM, max(max(lNW, lNE), max(lSW, lSE)));
+  vec2 dir = vec2(-((lNW + lNE) - (lSW + lSE)), (lNW + lSW) - (lNE + lSE));
+  float reduce = max((lNW + lNE + lSW + lSE) * 0.03125, 0.0078125);
+  float rcp = 1.0 / (min(abs(dir.x), abs(dir.y)) + reduce);
+  dir = clamp(dir * rcp, vec2(-8.0), vec2(8.0)) * inv;
+  vec3 a = 0.5 * (texture2D(uTex, uv + dir * (1.0 / 3.0 - 0.5)).rgb +
+                  texture2D(uTex, uv + dir * (2.0 / 3.0 - 0.5)).rgb);
+  vec3 b = a * 0.5 + 0.25 * (texture2D(uTex, uv + dir * -0.5).rgb +
+                             texture2D(uTex, uv + dir * 0.5).rgb);
+  float lB = dot(b, L);
+  gl_FragColor = vec4((lB < lMin || lB > lMax) ? a : b, 1.0);
+}
+`;
+
 function compile(gl: WebGLRenderingContext, type: number, src: string) {
   const sh = gl.createShader(type);
   if (!sh) return null;
@@ -228,25 +259,43 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
 
   const vs = compile(gl, gl.VERTEX_SHADER, VERT);
   const fs = compile(gl, gl.FRAGMENT_SHADER, FRAG);
-  if (!vs || !fs) return null;
+  const fsPost = compile(gl, gl.FRAGMENT_SHADER, FRAG_POST);
+  if (!vs || !fs || !fsPost) return null;
 
-  const prog = gl.createProgram();
-  if (!prog) return null;
-  gl.attachShader(prog, vs);
-  gl.attachShader(prog, fs);
-  gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    console.warn('[blackhole] link:', gl.getProgramInfoLog(prog));
-    return null;
-  }
-  gl.useProgram(prog);
+  const link = (frag: WebGLShader) => {
+    const pr = gl.createProgram();
+    if (!pr) return null;
+    gl.attachShader(pr, vs);
+    gl.attachShader(pr, frag);
+    gl.bindAttribLocation(pr, 0, 'aPos');
+    gl.linkProgram(pr);
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) {
+      console.warn('[blackhole] link:', gl.getProgramInfoLog(pr));
+      return null;
+    }
+    return pr;
+  };
+  const prog = link(fs);
+  const post = link(fsPost);
+  if (!prog || !post) return null;
 
   const buf = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buf);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-  const aPos = gl.getAttribLocation(prog, 'aPos');
-  gl.enableVertexAttribArray(aPos);
-  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(0);
+  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  // El 1.er paso se dibuja en una textura; el 2.º la pasa al canvas ya suavizada.
+  const tex = gl.createTexture();
+  const fbo = gl.createFramebuffer();
+  if (!tex || !fbo) return null;
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const postRes = gl.getUniformLocation(post, 'uRes');
+  const postTex = gl.getUniformLocation(post, 'uTex');
 
   const u = (name: string) => gl.getUniformLocation(prog, name);
   const U = {
@@ -264,8 +313,10 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
-  const maxScale = Math.min(window.devicePixelRatio || 1, 1.5) * (coarse ? 0.55 : 0.75);
-  const minScale = 0.3;
+  // Resolucion nativa de la pantalla (sin submuestrear), con tope de pixeles; en el movil un poco menos.
+  const maxScale = Math.min(window.devicePixelRatio || 1, 2) * (coarse ? 0.8 : 1);
+  const minScale = 0.55;
+  const MAX_PIXELS = 2_600_000;
   let scale = maxScale;
 
   const state = { progress: 0, targetProgress: 0, px: 0, py: 0, tpx: 0, tpy: 0 };
@@ -278,13 +329,20 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
   const t0 = performance.now();
 
   function resize() {
-    const w = Math.max(2, Math.floor(canvas.clientWidth * scale));
-    const h = Math.max(2, Math.floor(canvas.clientHeight * scale));
+    let s = scale;
+    const px = canvas.clientWidth * canvas.clientHeight * s * s;
+    if (px > MAX_PIXELS) s *= Math.sqrt(MAX_PIXELS / px);
+    const w = Math.max(2, Math.floor(canvas.clientWidth * s));
+    const h = Math.max(2, Math.floor(canvas.clientHeight * s));
     if (canvas.width !== w || canvas.height !== h) {
       canvas.width = w;
       canvas.height = h;
     }
-    gl!.viewport(0, 0, canvas.width, canvas.height);
+    gl!.bindTexture(gl!.TEXTURE_2D, tex);
+    gl!.texImage2D(gl!.TEXTURE_2D, 0, gl!.RGBA, w, h, 0, gl!.RGBA, gl!.UNSIGNED_BYTE, null);
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
+    gl!.framebufferTexture2D(gl!.FRAMEBUFFER, gl!.COLOR_ATTACHMENT0, gl!.TEXTURE_2D, tex, 0);
+    gl!.viewport(0, 0, w, h);
   }
 
   function draw(timeSec: number) {
@@ -296,6 +354,9 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     const azim = state.px * 0.16;
     const offX = L.offX * (1 - 0.35 * p);
 
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, fbo);
+    gl!.viewport(0, 0, canvas.width, canvas.height);
+    gl!.useProgram(prog);
     gl!.uniform2f(U.res, canvas.width, canvas.height);
     gl!.uniform1f(U.time, timeSec);
     gl!.uniform1f(U.dist, dist);
@@ -306,6 +367,16 @@ export function initBlackHole(canvas: HTMLCanvasElement, cfg: BHConfig): BHContr
     gl!.uniform1f(U.disk, cfg.disk ?? 1);
     gl!.uniform1f(U.spin, cfg.spin ?? 1);
     gl!.uniform1f(U.prog, p);
+    gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
+
+    // 2.º paso: textura -> canvas con suavizado de bordes
+    gl!.bindFramebuffer(gl!.FRAMEBUFFER, null);
+    gl!.viewport(0, 0, canvas.width, canvas.height);
+    gl!.useProgram(post);
+    gl!.activeTexture(gl!.TEXTURE0);
+    gl!.bindTexture(gl!.TEXTURE_2D, tex);
+    gl!.uniform1i(postTex, 0);
+    gl!.uniform2f(postRes, canvas.width, canvas.height);
     gl!.drawArrays(gl!.TRIANGLE_STRIP, 0, 4);
 
     if (!readyFired) {

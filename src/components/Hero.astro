@@ -19,7 +19,7 @@ import { waLink } from '@/config';
 
   <div class="absolute inset-0 -z-10 overflow-hidden" id="hero-visual" aria-hidden="true">
     <!-- Respaldo en CSS: se ve mientras carga el shader o si no hay WebGL -->
-    <div class="bh-css absolute inset-0 transition-opacity duration-1000" data-bh-css>
+    <div class="bh-css absolute inset-0 hidden" data-bh-css>
       <div class="bh-stars absolute inset-0"></div>
 
       <div
@@ -301,12 +301,11 @@ import { waLink } from '@/config';
           aspect >= 1.15
             ? { dist: 25, elev: 0.12, roll: -0.15, offX: Math.min(0.5, 0.22 * aspect), offY: 0.02 }
             : { dist: 40, elev: 0.14, roll: -0.12, offX: 0, offY: -0.36 },
-        onReady: () => {
-          bhCss?.classList.add('opacity-0');
-          window.setTimeout(() => bhCss?.classList.add('hidden'), 1200);
-        },
       })
     : null;
+
+  // El respaldo en CSS solo se muestra si el navegador no puede con WebGL (nunca durante la carga).
+  if (!bh) bhCss?.classList.remove('hidden');
 
   if (bh) {
     ScrollTrigger.create({
