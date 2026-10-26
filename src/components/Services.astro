@@ -2,13 +2,17 @@
 import Icon from '@/components/Icon.astro';
 import { lines, services, combos } from '@/data/services';
 import { waLink } from '@/config';
+import OrbitDecor from '@/components/OrbitDecor.astro';
+
+const lineLabel: Record<string, string> = Object.fromEntries(lines.map((l) => [l.id, l.label]));
 
 const filterClass =
   'min-h-11 rounded-full border border-gray/40 px-5 py-2 text-sm font-medium text-silver transition-colors duration-300 hover:border-silver hover:text-gainsboro data-[active=true]:border-gainsboro data-[active=true]:bg-gainsboro data-[active=true]:text-obsidian';
 ---
 
-<section id="servicios" class="relative py-20 sm:py-40" aria-label="Servicios">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+<section id="servicios" class="sec-top relative overflow-x-clip py-20 sm:py-40" aria-label="Servicios">
+  <OrbitDecor class="left-1/2 top-[-60px] -translate-x-1/2 sm:top-[-140px]" size={1250} tilt={-8} speed={60} squash={0.26} />
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
     <div class="mx-auto max-w-3xl text-center" data-reveal-group>
       <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
         Todo lo que tu negocio necesita para crecer en línea
@@ -56,7 +60,14 @@ const filterClass =
             data-service-card
             data-service-line={service.line}
           >
-            <Icon name={service.icon} class="h-7 w-7 text-silver transition-colors duration-500 group-hover:text-amber" />
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 items-center justify-center rounded-xl border border-gray/25 bg-gunmetal/40 text-silver transition-colors duration-500 group-hover:border-amber/50 group-hover:text-amber">
+                <Icon name={service.icon} class="h-6 w-6" />
+              </span>
+              <span class="rounded-full border border-gray/30 px-3 py-1 text-xs font-medium text-silver">
+                {lineLabel[service.line]}
+              </span>
+            </div>
             <h3 class="mt-6 font-heading text-xl font-semibold text-gainsboro">{service.name}</h3>
             <p class="mt-3 text-sm leading-relaxed text-silver">{service.summary}</p>
             <ul class="mt-6 space-y-2.5 border-t border-gray/20 pt-6">
@@ -105,11 +116,12 @@ const filterClass =
         {
           combos.map((combo) => (
             <div
-              class="spot rounded-2xl border border-gray/25 bg-gunmetal/20 p-7 hover:border-silver/45"
+              class="spot rounded-2xl border border-amber/25 bg-gunmetal/25 p-7 hover:border-amber/60"
               data-spot
               data-reveal
             >
-              <h4 class="font-heading text-lg font-semibold text-gainsboro">{combo.name}</h4>
+              <span class="block h-1 w-10 rounded-full bg-amber"></span>
+              <h4 class="mt-5 font-heading text-lg font-semibold text-gainsboro">{combo.name}</h4>
               <p class="mt-3 text-sm leading-relaxed text-silver">{combo.description}</p>
             </div>
           ))

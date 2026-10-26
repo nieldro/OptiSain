@@ -1,10 +1,12 @@
 ---
 import Icon from '@/components/Icon.astro';
 import { whyPoints } from '@/data/site';
+import OrbitDecor from '@/components/OrbitDecor.astro';
 ---
 
-<section id="por-que-optisain" class="relative py-20 sm:py-40" aria-label="Por qué OptiSain">
-  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+<section id="por-que-optisain" class="sec-top relative overflow-x-clip py-20 sm:py-40" aria-label="Por qué OptiSain">
+  <OrbitDecor class="left-1/2 top-[-40px] -translate-x-1/2 sm:top-[-90px]" size={1100} tilt={10} speed={48} squash={0.28} />
+  <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
     <div class="mx-auto max-w-2xl text-center" data-reveal-group>
       <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
         Un solo aliado para todo lo digital
@@ -17,8 +19,10 @@ import { whyPoints } from '@/data/site';
     >
       {
         whyPoints.map((point) => (
-          <div class="border-t border-gray/30 pt-8" data-reveal>
-            <Icon name={point.icon} class="h-7 w-7 text-amber" />
+          <div class="group border-t border-gray/30 pt-8" data-reveal>
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber/30 bg-gunmetal/30 text-amber transition-transform duration-500 group-hover:-translate-y-1">
+              <Icon name={point.icon} class="h-7 w-7" />
+            </span>
             <h3 class="mt-6 font-heading text-lg font-semibold text-gainsboro">{point.title}</h3>
             <p class="mt-3 text-sm leading-relaxed text-silver">{point.text}</p>
           </div>

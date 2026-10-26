@@ -1,9 +1,11 @@
 ---
 import { faqs } from '@/data/site';
+import OrbitDecor from '@/components/OrbitDecor.astro';
 ---
 
-<section id="preguntas" class="relative py-20 sm:py-40" aria-label="Preguntas frecuentes">
-  <div class="mx-auto max-w-3xl px-5 sm:px-8">
+<section id="preguntas" class="sec-top relative overflow-x-clip py-20 sm:py-40" aria-label="Preguntas frecuentes">
+  <OrbitDecor class="-right-40 top-10 sm:-right-24 sm:top-20" size={760} tilt={-24} speed={56} squash={0.34} />
+  <div class="relative mx-auto max-w-3xl px-5 sm:px-8">
     <div class="text-center" data-reveal-group>
       <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
         Resolvemos tus dudas

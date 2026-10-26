@@ -1,11 +1,13 @@
 ---
 import Icon from '@/components/Icon.astro';
+import OrbitDecor from '@/components/OrbitDecor.astro';
 import { services } from '@/data/services';
 import { WHATSAPP_DISPLAY, waLink } from '@/config';
 ---
 
-<section id="contacto" class="relative py-20 sm:py-40" aria-label="Contacto">
-  <div class="mx-auto max-w-5xl px-5 sm:px-8">
+<section id="contacto" class="sec-top relative overflow-x-clip py-20 sm:py-40" aria-label="Contacto">
+  <OrbitDecor class="-left-40 bottom-0 sm:-left-32 sm:bottom-10" size={820} tilt={16} speed={50} squash={0.32} />
+  <div class="relative mx-auto max-w-5xl px-5 sm:px-8">
     <div class="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1.2fr]">
       <div data-reveal-group>
         <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
