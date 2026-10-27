@@ -115,22 +115,6 @@
     }
   }
 
-  /* Marca gigante del pie */
-  .footer-word {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: clamp(3.4rem, 19.5vw, 21rem);
-    line-height: 1.05;
-    letter-spacing: -0.04em;
-    text-align: center;
-    white-space: nowrap;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgba(211, 216, 226, 0.22);
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
-    user-select: none;
-  }
-
   /* Barrido de luz sobre los botones principales al pasar el cursor */
   .btn-shine {
     position: relative;

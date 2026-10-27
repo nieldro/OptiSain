@@ -1,26 +1,59 @@
 ---
 import { navLinks } from '@/data/site';
 import { WHATSAPP_DISPLAY, waLink } from '@/config';
+import OrbitDecor from '@/components/OrbitDecor.astro';
 ---
 
-<footer class="relative overflow-hidden border-t border-gray/25 pt-14">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8">
-    <div class="flex flex-col items-center gap-8 text-center sm:flex-row sm:justify-between sm:text-left">
+<footer class="relative overflow-hidden border-t border-gray/25 pt-20 sm:pt-28" data-footer>
+  <!-- Horizonte de un planeta: el cierre del viaje -->
+  <div class="ft-horizon" aria-hidden="true"></div>
+  <OrbitDecor class="left-1/2 bottom-[-380px] -translate-x-1/2" size={1700} tilt={-4} speed={70} squash={0.2} />
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="flex flex-col gap-12 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <a
+          href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Escribir por WhatsApp al ${WHATSAPP_DISPLAY}`}
+          class="ft-phone group inline-flex items-center gap-4 sm:gap-6"
+        >
+          <span class="ft-phone-text">{WHATSAPP_DISPLAY}</span>
+          <span class="ft-phone-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+        </a>
+        <p class="mt-5 text-lg text-silver">Escríbenos y te respondemos el mismo día.</p>
+      </div>
+
+      <button type="button" class="ft-badge" data-to-top aria-label="Volver arriba">
+        <svg class="ft-badge-ring" viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <path id="ft-ring" d="M60,60 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"></path>
+          </defs>
+          <text>
+            <textPath href="#ft-ring" startOffset="0">VOLVER A LA ÓRBITA · VOLVER A LA ÓRBITA · </textPath>
+          </text>
+        </svg>
+        <svg class="ft-badge-arrow" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="mt-16 flex flex-col items-center gap-8 border-t border-gray/20 pt-8 sm:flex-row sm:justify-between">
       <a href="#top" aria-label="OptiSain, inicio">
-        <img
-          src="/logo/optisain-logo-gainsboro.svg"
-          alt="OptiSain"
-          class="h-8 w-auto"
-          width="140"
-          height="36"
-        />
+        <img src="/logo/optisain-logo-gainsboro.svg" alt="OptiSain" class="h-8 w-auto" width="140" height="36" />
       </a>
 
-      <ul class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+      <ul class="flex flex-wrap justify-center gap-x-7 gap-y-1">
         {
           navLinks.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-silver hover:text-gainsboro">
+              <a href={link.href} class="inline-flex min-h-11 items-center text-sm text-silver transition-colors hover:text-gainsboro">
                 {link.label}
               </a>
             </li>
@@ -28,17 +61,224 @@ import { WHATSAPP_DISPLAY, waLink } from '@/config';
         }
       </ul>
 
-      <a
-        href={waLink('Hola OptiSain, quiero cotizar un proyecto.')}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex min-h-11 items-center text-sm text-silver hover:text-amber"
-      >
-        {WHATSAPP_DISPLAY}
-      </a>
+      <p class="text-xs text-silver">© 2026 OptiSain. Hecho en Colombia.</p>
     </div>
-
-    <p class="mt-10 text-center text-xs text-silver">© 2026 OptiSain. Hecho en Colombia.</p>
   </div>
-  <div class="footer-word mt-2 select-none" aria-hidden="true">OptiSain</div>
+
+  <!-- Marca gigante: la luz ámbar sigue al cursor -->
+  <div class="ft-word" data-ft-word aria-hidden="true">
+    <span class="ft-word-base">OptiSain</span>
+    <span class="ft-word-lit">OptiSain</span>
+  </div>
 </footer>
+
+<style>
+  @property --fx {
+    syntax: '<length-percentage>';
+    inherits: true;
+    initial-value: 50%;
+  }
+
+  .ft-horizon {
+    position: absolute;
+    left: 50%;
+    bottom: -50%;
+    width: 120%;
+    aspect-ratio: 3.2 / 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 181, 71, 0.13), rgba(44, 64, 87, 0.38) 34%, rgba(22, 21, 22, 0) 68%);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 181, 71, 0.5),
+      inset 0 36px 90px -34px rgba(255, 181, 71, 0.42);
+  }
+
+  /* Telefono gigante como llamada final */
+  .ft-phone {
+    color: var(--color-gainsboro);
+  }
+
+  .ft-phone-text {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 8vw, 5.6rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(var(--color-amber), var(--color-amber)) no-repeat 0 100% / 0% 3px;
+    padding-bottom: 0.12em;
+    transition: background-size 0.7s cubic-bezier(0.22, 1, 0.36, 1), color 0.4s;
+  }
+
+  .ft-phone:hover .ft-phone-text,
+  .ft-phone:focus-visible .ft-phone-text {
+    background-size: 100% 3px;
+    color: #fff;
+  }
+
+  .ft-phone-arrow {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: clamp(2.6rem, 6vw, 4.6rem);
+    height: clamp(2.6rem, 6vw, 4.6rem);
+    padding: clamp(0.6rem, 1.4vw, 1.1rem);
+    border-radius: 9999px;
+    background: var(--color-amber);
+    color: var(--color-obsidian);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ft-phone:hover .ft-phone-arrow {
+    transform: rotate(45deg) scale(1.06);
+  }
+
+  /* Sello giratorio para volver arriba */
+  .ft-badge {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 112px;
+    height: 112px;
+    border-radius: 9999px;
+    border: 1px solid rgba(147, 155, 170, 0.35);
+    background: rgba(22, 21, 22, 0.55);
+    color: var(--color-gainsboro);
+    transition: border-color 0.4s, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ft-badge:hover {
+    border-color: var(--color-amber);
+    transform: translateY(-4px);
+  }
+
+  .ft-badge-ring {
+    position: absolute;
+    inset: 0;
+    animation: ft-spin 22s linear infinite;
+  }
+
+  .ft-badge-ring text {
+    font-family: var(--font-body);
+    font-size: 9.4px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    fill: var(--color-silver);
+  }
+
+  .ft-badge-arrow {
+    width: 28px;
+    height: 28px;
+    color: var(--color-amber);
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ft-badge:hover .ft-badge-arrow {
+    transform: translateY(-4px);
+  }
+
+  @keyframes ft-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Marca gigante con luz que viaja */
+  .ft-word {
+    position: relative;
+    margin-top: clamp(1rem, 3vw, 3rem);
+    display: grid;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(3.4rem, 19.5vw, 21rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    --fx: 50%;
+    --fy: 60%;
+    animation: ft-wander 9s ease-in-out infinite alternate;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgba(0, 0, 0, 0.35) 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 55%, rgba(0, 0, 0, 0.35) 100%);
+  }
+
+  .ft-word.is-pointer {
+    animation: none;
+  }
+
+  .ft-word span {
+    grid-area: 1 / 1;
+  }
+
+  .ft-word-base {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(211, 216, 226, 0.26);
+  }
+
+  .ft-word-lit {
+    color: var(--color-amber);
+    -webkit-mask-image: radial-gradient(26vw circle at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 74%);
+    mask-image: radial-gradient(26vw circle at var(--fx) var(--fy), #000 0%, rgba(0, 0, 0, 0.55) 38%, transparent 74%);
+  }
+
+  @keyframes ft-wander {
+    from {
+      --fx: -8%;
+    }
+    to {
+      --fx: 108%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ft-badge-ring,
+    .ft-word {
+      animation: none;
+    }
+  }
+
+  /* Celulares: sin animacion de la luz ni del sello (menos trabajo al hacer scroll) */
+  @media (pointer: coarse), (max-width: 767px) {
+    .ft-word {
+      animation: none;
+    }
+    .ft-badge-ring {
+      animation: none;
+    }
+    .ft-badge {
+      width: 96px;
+      height: 96px;
+    }
+  }
+</style>
+
+<script>
+  const footer = document.querySelector<HTMLElement>('[data-footer]');
+  const word = document.querySelector<HTMLElement>('[data-ft-word]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = window.matchMedia('(pointer: fine)').matches;
+
+  // La luz de la marca sigue al cursor mientras esta sobre el pie.
+  if (footer && word && fine && !reduce) {
+    footer.addEventListener(
+      'pointermove',
+      (e) => {
+        const r = word.getBoundingClientRect();
+        word.classList.add('is-pointer');
+        word.style.setProperty('--fx', `${e.clientX - r.left}px`);
+        word.style.setProperty('--fy', `${Math.min(Math.max(e.clientY - r.top, r.height * 0.2), r.height * 0.9)}px`);
+      },
+      { passive: true }
+    );
+    footer.addEventListener('pointerleave', () => {
+      word.classList.remove('is-pointer');
+      word.style.removeProperty('--fx');
+      word.style.removeProperty('--fy');
+    });
+  }
+
+  document.querySelector<HTMLElement>('[data-to-top]')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+</script>
