@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://optisain.co/sitemap-index.xml
+Sitemap: https://optisain.35.196.253.146.sslip.io/sitemap-index.xml

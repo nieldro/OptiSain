@@ -28,8 +28,8 @@ import { plans, paymentMethods, formatCop } from '@/data/plans';
     {plans.map((p) => <li>Plan {p.name}: {formatCop(p.price)} el primer año; renovación desde el año 2: {formatCop(p.renewal)} al año.</li>)}
   </ul>
   <p>
-    Los valores están en pesos colombianos (COP). En la propuesta se indica si el valor incluye o no impuestos y se
-    detalla lo que incluye cada plan. La opción en cuotas (cuota inicial más 12 mensualidades) tiene un total mayor que el
+    Los valores están en pesos colombianos (COP) y no incluyen IVA. Si en tu caso corresponde cobrarlo, se suma y se
+    indica en la propuesta antes de que aceptes. La propuesta detalla lo que incluye cada plan. La opción en cuotas (cuota inicial más 12 mensualidades) tiene un total mayor que el
     pago único, y ese total se muestra en el sitio antes de contratar. Las propuestas tienen vigencia de 15 días, salvo
     que indiquen otra.
   </p>
