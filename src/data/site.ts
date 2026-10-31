@@ -1,3 +1,5 @@
+import { plans, formatCop } from '@/data/plans';
+
 export interface Step {
   title: string;
   text: string;
@@ -48,7 +50,7 @@ export interface Faq {
 export const faqs: Faq[] = [
   {
     question: '¿Cuánto cuesta un proyecto?',
-    answer: 'Cada negocio es distinto. Después de un diagnóstico gratis de 15 minutos te enviamos una propuesta con precio exacto y sin costos ocultos.',
+    answer: `Las páginas web tienen precio fijo: ${plans.map((p) => `${p.name} ${formatCop(p.price)}`).join(', ')}, con dominio, hosting, correos y 12 meses de mantenimiento incluidos (también en cuotas). Para chatbots, automatizaciones y dashboards, después de un diagnóstico gratis de 15 minutos te enviamos una propuesta con precio exacto y sin costos ocultos.`,
   },
   {
     question: '¿Cuánto tiempo toma?',
@@ -74,6 +76,7 @@ export const faqs: Faq[] = [
 
 export const navLinks = [
   { href: '#servicios', label: 'Servicios' },
+  { href: '#planes', label: 'Planes' },
   { href: '#como-trabajamos', label: 'Cómo trabajamos' },
   { href: '#por-que-optisain', label: 'Por qué OptiSain' },
   { href: '#preguntas', label: 'Preguntas' },

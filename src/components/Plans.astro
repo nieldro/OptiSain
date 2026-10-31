@@ -1,0 +1,123 @@
+---
+import Icon from '@/components/Icon.astro';
+import OrbitDecor from '@/components/OrbitDecor.astro';
+import { plans, included, planSteps, paymentMethods, formatCop, installmentsTotal } from '@/data/plans';
+import { waLink } from '@/config';
+---
+
+<section id="planes" class="sec-top relative overflow-x-clip py-20 sm:py-40" aria-label="Planes de páginas web">
+  <OrbitDecor class="-right-40 top-24 sm:-right-28" size={900} tilt={-14} speed={64} squash={0.3} />
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="mx-auto max-w-3xl text-center" data-reveal-group>
+      <h2 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl" data-reveal>
+        Tu página web lista, sin enredos
+      </h2>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-silver" data-reveal>
+        Diseño, dominio, hosting, correos y un año de mantenimiento en un solo precio. Tú te dedicas a vender;
+        nosotros hacemos que todo funcione.
+      </p>
+    </div>
+
+    <div class="mt-14 grid grid-cols-1 gap-5 lg:grid-cols-3" data-reveal-group>
+      {
+        plans.map((plan) => (
+          <article
+            class={`spot group relative flex flex-col rounded-2xl border p-8 ${
+              plan.featured ? 'border-amber/50 bg-gunmetal/30 hover:border-amber' : 'border-gray/25 bg-obsidian/55 hover:border-silver/45'
+            }`}
+            data-reveal
+          >
+            {plan.featured && (
+              <span class="absolute -top-3 left-8 rounded-full bg-amber px-3 py-1 text-xs font-semibold text-obsidian">
+                El más elegido
+              </span>
+            )}
+            <h3 class="font-heading text-xl font-semibold text-gainsboro">{plan.name}</h3>
+            <p class="mt-3 min-h-12 text-sm leading-relaxed text-silver">{plan.tagline}</p>
+
+            <p class="mt-6 text-sm text-silver">
+              Por separado <s class="decoration-gray">{formatCop(plan.separate)}</s>
+            </p>
+            <p class="font-heading text-4xl font-bold tracking-tight text-gainsboro">{formatCop(plan.price)}</p>
+            <p class="mt-1 text-sm font-medium text-amber">Ahorras {formatCop(plan.separate - plan.price)}</p>
+            <p class="mt-1 text-xs text-silver">Pago único del primer año. Desde el año 2: {formatCop(plan.renewal)}/año.</p>
+
+            <p class="mt-5 rounded-xl border border-gray/25 bg-obsidian/50 px-4 py-3 text-sm leading-relaxed text-silver">
+              <span class="font-semibold text-gainsboro">¿Prefieres cuotas?</span> {formatCop(plan.downPayment)} de cuota
+              inicial y {formatCop(plan.monthly)} al mes por 12 meses. Total: {formatCop(installmentsTotal(plan))}.
+            </p>
+
+            <ul class="mt-6 space-y-2.5 border-t border-gray/20 pt-6">
+              {plan.features.map((item) => (
+                <li class="flex items-start gap-2.5 text-sm leading-relaxed text-silver">
+                  <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-amber" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-4 text-xs font-medium uppercase tracking-wide text-silver">{plan.delivery}</p>
+
+            <a
+              href={waLink(`Hola OptiSain, quiero el plan ${plan.name}.`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`btn-shine relative mt-auto inline-flex min-h-11 items-center justify-center overflow-hidden rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] ${
+                plan.featured ? 'bg-amber text-obsidian' : 'border border-gainsboro text-gainsboro hover:bg-gainsboro hover:text-obsidian'
+              }`}
+              style="margin-top: 1.75rem"
+            >
+              {plan.cta ?? `Quiero el ${plan.name}`}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-24" data-reveal-group>
+      <h3
+        class="text-balance text-center font-heading text-2xl font-bold tracking-tight text-gainsboro sm:text-4xl"
+        data-reveal
+      >
+        Va incluido en todos los planes
+      </h3>
+      <p class="mx-auto mt-4 max-w-xl text-center text-silver" data-reveal>
+        Te entregamos todo funcionando. Si contrataras cada cosa por separado pagarías mucho más.
+      </p>
+      <ul class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          included.map((item) => (
+            <li class="rounded-2xl border border-gray/25 bg-obsidian/55 p-6" data-reveal>
+              <Icon name="check" class="h-5 w-5 text-amber" />
+              <p class="mt-4 font-heading text-base font-semibold text-gainsboro">{item.title}</p>
+              <p class="mt-2 text-sm leading-relaxed text-silver">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="mt-24" data-reveal-group>
+      <h3
+        class="text-balance text-center font-heading text-2xl font-bold tracking-tight text-gainsboro sm:text-4xl"
+        data-reveal
+      >
+        Así arrancamos
+      </h3>
+      <ol class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+        {
+          planSteps.map((step, i) => (
+            <li class="rounded-2xl border border-amber/25 bg-gunmetal/25 p-7" data-reveal>
+              <span class="font-heading text-sm font-semibold text-amber">0{i + 1}</span>
+              <p class="mt-3 font-heading text-lg font-semibold text-gainsboro">{step.title}</p>
+              <p class="mt-3 text-sm leading-relaxed text-silver">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="mx-auto mt-10 max-w-2xl text-center text-sm leading-relaxed text-silver" data-reveal>
+        Valores en pesos colombianos. Pagos por {paymentMethods}. Las condiciones completas están en los
+        <a href="/terminos/" class="text-gainsboro underline underline-offset-4 hover:text-amber">términos y condiciones</a>.
+      </p>
+    </div>
+  </div>
+</section>

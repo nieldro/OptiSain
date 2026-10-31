@@ -1,0 +1,15 @@
+---
+import { SITE_NAME, SITE_URL, LEGAL_HOLDER, LEGAL_ID, LEGAL_CITY, LEGAL_EMAIL, WHATSAPP_DISPLAY, waLink } from '@/config';
+---
+
+<ul>
+  <li><strong>Responsable:</strong> {SITE_NAME}{LEGAL_HOLDER ? `, a cargo de ${LEGAL_HOLDER}` : ''}</li>
+  {LEGAL_ID && <li><strong>Documento:</strong> {LEGAL_ID}</li>}
+  <li><strong>Domicilio:</strong> {LEGAL_CITY}</li>
+  <li><strong>Sitio web:</strong> {SITE_URL}</li>
+  <li>
+    <strong>WhatsApp:</strong>
+    <a href={waLink('Hola OptiSain, tengo una solicitud sobre mis datos personales.')} target="_blank" rel="noopener noreferrer">{WHATSAPP_DISPLAY}</a>
+  </li>
+  {LEGAL_EMAIL && <li><strong>Correo:</strong> <a href={`mailto:${LEGAL_EMAIL}`}>{LEGAL_EMAIL}</a></li>}
+</ul>

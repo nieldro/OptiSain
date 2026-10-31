@@ -1,0 +1,125 @@
+---
+import LegalLayout from '@/layouts/LegalLayout.astro';
+import LegalContact from '@/components/LegalContact.astro';
+import { plans, paymentMethods, formatCop } from '@/data/plans';
+---
+
+<LegalLayout
+  title="Términos y condiciones"
+  description="Condiciones de uso del sitio de OptiSain y de contratación de nuestros planes de páginas web y demás servicios digitales."
+>
+  <p>
+    Al usar este sitio o contratar a OptiSain aceptas estos términos. Si no estás de acuerdo, por favor no uses el sitio ni
+    contrates los servicios. Lo que se acuerde por escrito en tu propuesta o cotización prevalece sobre estos términos.
+  </p>
+
+  <h2>1. Quiénes somos</h2>
+  <LegalContact />
+
+  <h2>2. Qué ofrecemos</h2>
+  <p>
+    OptiSain presta servicios digitales: páginas web, tiendas en línea, marca, publicidad, chatbots, automatizaciones y
+    dashboards. Lo publicado en el sitio es informativo; el alcance de cada trabajo queda definido en la propuesta que
+    aceptes.
+  </p>
+
+  <h2>3. Precios</h2>
+  <ul>
+    {plans.map((p) => <li>Plan {p.name}: {formatCop(p.price)} el primer año; renovación desde el año 2: {formatCop(p.renewal)} al año.</li>)}
+  </ul>
+  <p>
+    Los valores están en pesos colombianos (COP). En la propuesta se indica si el valor incluye o no impuestos y se
+    detalla lo que incluye cada plan. La opción en cuotas (cuota inicial más 12 mensualidades) tiene un total mayor que el
+    pago único, y ese total se muestra en el sitio antes de contratar. Las propuestas tienen vigencia de 15 días, salvo
+    que indiquen otra.
+  </p>
+
+  <h2>4. Cómo se contrata y se paga</h2>
+  <ul>
+    <li>El servicio se contrata al aceptar la propuesta y pagar el 50 % para separar el cupo.</li>
+    <li>El saldo se paga antes de la publicación, una vez aprobado el resultado.</li>
+    <li>Medios de pago: {paymentMethods}.</li>
+    <li>En el plan en cuotas, la cuota inicial separa el cupo y las 12 mensualidades se pagan en las fechas acordadas.</li>
+    <li>La falta de pago puede suspender el servicio hasta ponerse al día.</li>
+  </ul>
+
+  <h2>5. Plazos y revisiones</h2>
+  <p>
+    Los plazos (por ejemplo, 7, 15 o 25 días hábiles) se cuentan desde que recibimos el pago inicial y los materiales que
+    debes entregar: logo, fotos, textos y datos. Si hay retrasos en esos materiales o en tus respuestas, el plazo se
+    corre en la misma medida. Incluimos dos rondas de ajustes antes de publicar; cambios adicionales se cotizan aparte.
+  </p>
+
+  <h2>6. Mantenimiento incluido</h2>
+  <p>
+    Los 12 meses de mantenimiento incluyen actualizaciones, copias de seguridad y un cambio al mes sobre el contenido ya
+    publicado. No incluyen rediseños, páginas o funciones nuevas, que se cotizan aparte. Al terminar el año puedes renovar
+    al valor de renovación del plan.
+  </p>
+
+  <h2>7. Tus obligaciones</h2>
+  <ul>
+    <li>Entregarnos información veraz y los materiales a tiempo.</li>
+    <li>Contar con los derechos sobre los textos, imágenes, marcas y productos que nos entregues.</li>
+    <li>Cumplir las normas aplicables a tu negocio (por ejemplo, publicidad, consumo y tratamiento de datos de tus clientes).</li>
+  </ul>
+
+  <h2>8. Propiedad intelectual</h2>
+  <p>
+    Tus marcas, textos e imágenes siguen siendo tuyos. Una vez pagado el total del servicio, tienes derecho de uso del
+    diseño y del contenido desarrollados para tu proyecto. El código y las herramientas de terceros (por ejemplo,
+    plataformas, plantillas o tipografías) se rigen por sus propias licencias. OptiSain puede mencionar el proyecto como
+    referencia de su trabajo, salvo que nos pidas por escrito no hacerlo.
+  </p>
+
+  <h2>9. Garantía y responsabilidad</h2>
+  <p>
+    Entregamos el trabajo conforme a lo acordado y corregimos sin costo los errores de funcionamiento que nos reportes
+    dentro del periodo de mantenimiento. No garantizamos posiciones en Google, volumen de ventas ni resultados
+    comerciales, que dependen de factores fuera de nuestro control. No respondemos por fallas de terceros (hosting
+    externo, pasarelas de pago, WhatsApp u otros servicios) ni por contenidos que tú nos entregues. Nuestra
+    responsabilidad total frente a ti se limita al valor pagado por el servicio afectado, sin perjuicio de lo que la ley
+    no permita limitar. Estos términos no restringen los derechos que la ley te otorga como consumidor.
+  </p>
+
+  <h2>10. Derecho de retracto y desistimiento</h2>
+  <p>
+    Si contratas a distancia como consumidor, tienes derecho de retracto dentro de los 5 días hábiles siguientes a la
+    contratación, conforme al artículo 47 de la Ley 1480 de 2011. Ese derecho no aplica a servicios cuya prestación ya
+    comenzó con tu acuerdo, ni a trabajos hechos a la medida según tus especificaciones. Si te retractas antes de que
+    iniciemos, te devolvemos lo pagado sin descuentos. Puedes ejercerlo escribiéndonos por los canales de la sección 1.
+  </p>
+
+  <h2>11. Terminación</h2>
+  <p>
+    Cualquiera de las partes puede terminar el servicio avisando por escrito. Lo ya trabajado y los gastos ya hechos
+    (por ejemplo, dominio registrado) no son reembolsables, salvo lo dispuesto en la sección 10 o en la ley. Podemos
+    suspender o terminar el servicio si hay incumplimiento grave, falta de pago o uso ilegal.
+  </p>
+
+  <h2>12. Uso del sitio</h2>
+  <p>
+    Puedes navegar y usar este sitio para informarte y contactarnos. No debes intentar vulnerarlo, copiar su diseño o sus
+    textos para otro fin, ni usarlo para enviar contenido ilícito. Los textos, el diseño, el logo y la marca OptiSain nos
+    pertenecen.
+  </p>
+
+  <h2>13. Datos personales</h2>
+  <p>
+    Tratamos tus datos como explica la <a href="/privacidad/">política de privacidad</a>, y el uso de cookies está en la
+    <a href="/cookies/">política de cookies</a>.
+  </p>
+
+  <h2>14. Ley aplicable y solución de diferencias</h2>
+  <p>
+    Estos términos se rigen por las leyes de Colombia. Primero intentaremos resolver cualquier diferencia hablando
+    directamente. Si no es posible, se acudirá a los jueces o autoridades competentes en Colombia, incluida la
+    Superintendencia de Industria y Comercio cuando se trate de asuntos de consumo.
+  </p>
+
+  <h2>15. Cambios</h2>
+  <p>
+    Podemos actualizar estos términos; la versión vigente es la publicada aquí con su fecha. Los cambios no afectan los
+    servicios ya contratados, que se rigen por los términos y la propuesta vigentes al contratar.
+  </p>
+</LegalLayout>

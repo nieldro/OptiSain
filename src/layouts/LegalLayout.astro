@@ -1,0 +1,101 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { LEGAL_UPDATED } from '@/config';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const legalLinks = [
+  { href: '/privacidad/', label: 'Política de privacidad' },
+  { href: '/terminos/', label: 'Términos y condiciones' },
+  { href: '/cookies/', label: 'Política de cookies' },
+];
+---
+
+<Layout title={`${title} | OptiSain`} description={description} catalog={false}>
+  <header class="border-b border-gray/25">
+    <nav class="mx-auto flex max-w-3xl items-center justify-between px-5 py-4 sm:px-8" aria-label="Principal">
+      <a href="/" aria-label="OptiSain, inicio">
+        <img src="/logo/optisain-logo-gainsboro.svg" alt="OptiSain" class="h-8 w-auto" width="140" height="36" />
+      </a>
+      <a href="/" class="inline-flex min-h-11 items-center text-sm font-medium text-silver hover:text-gainsboro">
+        Volver al inicio
+      </a>
+    </nav>
+  </header>
+
+  <main id="contenido" class="mx-auto max-w-3xl px-5 py-14 sm:px-8 sm:py-20">
+    <h1 class="text-balance font-heading text-3xl font-bold tracking-tight text-gainsboro sm:text-5xl">{title}</h1>
+    <p class="mt-4 text-sm text-silver">Última actualización: {LEGAL_UPDATED}</p>
+    <div class="legal mt-10">
+      <slot />
+    </div>
+  </main>
+
+  <footer class="border-t border-gray/25">
+    <div class="mx-auto flex max-w-3xl flex-col items-center gap-3 px-5 py-8 sm:flex-row sm:justify-between sm:px-8">
+      <ul class="flex flex-wrap justify-center gap-x-6">
+        {
+          legalLinks.map((l) => (
+            <li>
+              <a href={l.href} class="inline-flex min-h-11 items-center text-sm text-silver hover:text-gainsboro">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-xs text-silver">© 2026 OptiSain. Hecho en Colombia.</p>
+    </div>
+  </footer>
+</Layout>
+
+<style is:global>
+  .legal h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-gainsboro);
+  }
+
+  .legal p,
+  .legal li {
+    line-height: 1.75;
+    color: var(--color-silver);
+  }
+
+  .legal p {
+    margin-top: 0.75rem;
+  }
+
+  .legal ul {
+    margin-top: 0.75rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .legal li {
+    margin-top: 0.4rem;
+  }
+
+  .legal strong {
+    color: var(--color-gainsboro);
+    font-weight: 600;
+  }
+
+  .legal a {
+    color: var(--color-gainsboro);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .legal a:hover {
+    color: var(--color-amber);
+  }
+</style>

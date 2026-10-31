@@ -3,7 +3,7 @@
 Sitio de OptiSain, estudio de servicios digitales en Colombia (webs, tiendas, branding, publicidad, chatbots con IA, automatizaciones, dashboards y datos). Público: dueños de negocios en Colombia y LATAM. Idioma: español de Colombia (`lang="es-CO"`), tuteo.
 
 ## Contenido
-- Servicios: `contenido/servicios.md` (15 servicios en 5 líneas + 4 combos). **Nunca mostrar precios.**
+- Servicios: `contenido/servicios.md` (15 servicios en 5 líneas + 4 combos). Solo se muestran los precios de los planes de páginas web (`src/data/plans.ts`, tomados de `propuesta-optisain.pdf` por pedido de Daniel el 31-oct-2026); el resto de servicios se cotiza por WhatsApp.
 - Resto de textos, FAQ y SEO: `contenido/textos-sitio.md`.
 - Datos de contacto aún no definidos: usar las constantes `WHATSAPP_NUMBER`, `CONTACT_EMAIL`, `INSTAGRAM_URL`, `SITE_URL` en un solo archivo de configuración (`src/config.ts`) para que se cambien en un lugar.
 

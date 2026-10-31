@@ -7,11 +7,14 @@ import { faqs } from '@/data/site';
 interface Props {
   title?: string;
   description?: string;
+  // Las páginas internas (legales) no llevan el catálogo ni las preguntas frecuentes.
+  catalog?: boolean;
 }
 
 const {
   title = 'OptiSain | Páginas web, tiendas online, chatbots y automatización en Colombia',
   description = 'Estudio digital en Colombia. Creamos páginas web, tiendas online, chatbots con IA, automatizaciones y dashboards para que tu negocio venda más. Cotiza gratis.',
+  catalog = true,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
@@ -88,8 +91,8 @@ const faqPage = {
     <meta name="theme-color" content="#161516" />
 
     <script type="application/ld+json" set:html={JSON.stringify(professionalService)} />
-    <script type="application/ld+json" set:html={JSON.stringify(offerCatalog)} />
-    <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />
+    {catalog && <script type="application/ld+json" set:html={JSON.stringify(offerCatalog)} />}
+    {catalog && <script type="application/ld+json" set:html={JSON.stringify(faqPage)} />}
   </head>
   <body class="text-gainsboro font-body antialiased">
     <a href="#contenido" class="skip-link">Saltar al contenido</a>

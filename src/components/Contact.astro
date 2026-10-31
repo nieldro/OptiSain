@@ -100,6 +100,24 @@ import { WHATSAPP_DISPLAY, waLink } from '@/config';
           ></textarea>
         </div>
 
+        <div>
+          <label class="flex items-start gap-3 text-sm leading-relaxed text-silver">
+            <input
+              id="consent"
+              name="consent"
+              type="checkbox"
+              required
+              aria-describedby="err-consent"
+              class="mt-1 h-4 w-4 shrink-0 accent-amber"
+            />
+            <span>
+              Autorizo a OptiSain a tratar mis datos para responder a este mensaje, según la
+              <a href="/privacidad/" target="_blank" class="text-gainsboro underline underline-offset-4 hover:text-amber">política de privacidad</a>.
+            </span>
+          </label>
+          <p id="err-consent" class="mt-1 hidden text-sm text-amber" data-error-for="consent">Marca la casilla para continuar.</p>
+        </div>
+
         <button
           type="submit"
           class="btn-shine relative flex w-full items-center justify-center overflow-hidden rounded-full bg-amber px-7 py-3.5 text-base font-semibold text-obsidian transition-transform hover:scale-[1.01] sm:inline-flex sm:w-auto"
@@ -141,6 +159,7 @@ import { WHATSAPP_DISPLAY, waLink } from '@/config';
     setError('name', name.length === 0);
     setError('whatsapp', whatsapp.replace(/[^0-9+]/g, '').length < 7);
     setError('service', service.length === 0);
+    setError('consent', !(form.elements.namedItem('consent') as HTMLInputElement).checked);
 
     if (!valid) {
       firstInvalid?.focus();
