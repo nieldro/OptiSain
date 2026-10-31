@@ -3,7 +3,7 @@
 import '@fontsource-variable/lexend/wght.css';
 import '@fontsource-variable/manrope/wght.css';
 import { lines, services, combos } from '@/data/services';
-import { plans, included, planSteps, paymentMethods, formatCop, installmentsTotal } from '@/data/plans';
+import { plans, included, planSteps } from '@/data/plans';
 import { WHATSAPP_DISPLAY, SITE_URL } from '@/config';
 
 const byLine = (id: string) => services.filter((s) => s.line === id);
@@ -29,7 +29,7 @@ const lineOf = (id: string) => lines.find((l) => l.id === id)!;
         <h1>Tu negocio en línea, sin enredos.</h1>
         <p class="lead">
           Páginas web, tiendas, chatbots con IA, automatizaciones y dashboards para negocios en Colombia. Un solo
-          equipo, precios claros y todo funcionando cuando te lo entregamos.
+          equipo y todo funcionando cuando te lo entregamos.
         </p>
       </div>
       <div class="cover-foot">
@@ -98,24 +98,17 @@ const lineOf = (id: string) => lines.find((l) => l.id === id)!;
 
     <!-- Planes -->
     <section class="page">
-      <h2 class="page-title">Planes todo incluido para tu página web</h2>
-      <p class="lead small">Un precio, todo adentro: diseño, dominio, hosting, correos y 12 meses de mantenimiento.</p>
+      <h2 class="page-title">Planes para tu página web</h2>
+      <p class="lead small">Todo adentro: diseño, dominio, hosting, correos y 12 meses de mantenimiento.</p>
       <div class="plans">
         {plans.map((p) => (
           <article class={`plan ${p.featured ? 'featured' : ''}`}>
             {p.featured && <span class="badge">El más elegido</span>}
             <h4>{p.name}</h4>
             <p class="tag">{p.tagline}</p>
-            <p class="was">Por separado <s>{formatCop(p.separate)}</s></p>
-            <p class="price">{formatCop(p.price)}</p>
-            <p class="save">Ahorras {formatCop(p.separate - p.price)}</p>
-            <p class="fine">Desde el año 2: {formatCop(p.renewal)}/año</p>
             <ul>{p.features.map((f) => <li>{f}</li>)}</ul>
             <p class="deliver">{p.delivery}</p>
-            <p class="installments">
-              <strong>En cuotas:</strong> {formatCop(p.downPayment)} + 12 × {formatCop(p.monthly)}<br />
-              Total {formatCop(installmentsTotal(p))}
-            </p>
+            <p class="installments">Pídenos la cotización por WhatsApp. Hay opción de pago en cuotas.</p>
           </article>
         ))}
       </div>
@@ -140,8 +133,8 @@ const lineOf = (id: string) => lines.find((l) => l.id === id)!;
         ))}
       </ol>
       <p class="legal">
-        Valores en pesos colombianos, sin IVA. Pagos por {paymentMethods}. Condiciones completas en {SITE_URL.replace('https://', '')}/terminos/.
-        Chatbots, automatizaciones, dashboards y demás servicios se cotizan según el alcance: escríbenos al {WHATSAPP_DISPLAY}.
+        Todos los servicios se cotizan según el alcance: escríbenos al {WHATSAPP_DISPLAY} y recibe tu propuesta.
+        Condiciones completas en {SITE_URL.replace('https://', '')}/terminos/.
       </p>
     </section>
   </body>
