@@ -12,7 +12,7 @@ export const SITE_NAME = 'OptiSain';
 export const LEGAL_HOLDER = 'Daniel Alejandro Páez Torres'; // persona natural; OptiSain es su nombre comercial
 export const LEGAL_ID = 'C.C. 1012318460'; // cédula o NIT
 export const LEGAL_CITY = 'Colombia'; // ciudad de domicilio, p. ej. 'Bogotá, Colombia'
-export const LEGAL_EMAIL = ''; // correo para peticiones de datos; mientras esté vacío se atiende por WhatsApp
+export const LEGAL_EMAIL = 'dapt030304@gmail.com'; // correo para peticiones de datos; mientras esté vacío se atiende por WhatsApp
 export const LEGAL_UPDATED = '31 de octubre de 2026';
 
 export function waLink(message: string): string {
