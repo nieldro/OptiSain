@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Dependencias del sitio (npm). Astro, Tailwind y GSAP se agrupan para no abrir un PR por cada una.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*']
+      tailwind:
+        patterns: ['tailwindcss', '@tailwindcss/*']
+
+  # Versiones de las acciones que usa el workflow de CI.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
