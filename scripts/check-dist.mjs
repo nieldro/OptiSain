@@ -1,5 +1,5 @@
 // Revisa el build (dist/) antes de publicar. Uso: npm run build && npm run check
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
@@ -77,6 +77,19 @@ for (const pagina of ['catalogo/index.html', '404.html']) {
   if (!/<meta name="robots" content="[^"]*noindex/.test(await read(pagina))) {
     fail(`${pagina} debería llevar noindex.`);
   }
+}
+
+// 9. Los archivos que la portada y el manifiesto prometen existen en dist/.
+const existe = (file) => access(join(dist, file)).then(() => true, () => false);
+const manifiesto = JSON.parse(await read('site.webmanifest'));
+const prometidos = [
+  'og.jpg',
+  'catalogo-optisain.pdf',
+  'favicon.svg',
+  ...manifiesto.icons.map((icono) => icono.src.replace(/^\//, '')),
+];
+for (const file of prometidos) {
+  if (!(await existe(file))) fail(`Falta dist/${file}.`);
 }
 
 if (failures.length) {
