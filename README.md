@@ -1,8 +1,15 @@
 # OptiSain · sitio web
 
-Sitio estático de una sola página, construido con [Astro](https://astro.build) + TypeScript +
-Tailwind CSS, con un planeta 3D en Three.js en el hero, animaciones con GSAP/ScrollTrigger y
-scroll suave con Lenis.
+Sitio de OptiSain, estudio de servicios digitales en Colombia (webs, tiendas, chatbots con IA,
+automatizaciones y dashboards). Es estático: [Astro](https://astro.build) 5 + TypeScript +
+Tailwind CSS 4, con un agujero negro en WebGL propio en el hero (`src/lib/blackhole.ts`, con
+respaldo en CSS si no hay WebGL), animaciones con GSAP/ScrollTrigger y scroll suave con Lenis.
+
+Además de la portada tiene la sección de planes con precios, las páginas legales (privacidad,
+términos y cookies), una página 404 y el catálogo en PDF.
+
+Más documentación: [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md), [`docs/LEGAL.md`](docs/LEGAL.md) y
+[`CHANGELOG.md`](CHANGELOG.md). Las reglas de marca están en [`CLAUDE.md`](CLAUDE.md).
 
 ## Desarrollo
 
