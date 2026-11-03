@@ -58,6 +58,14 @@ for (const pagina of paginas) {
   }
 }
 
+// 6. El idioma de cada página está declarado (lectores de pantalla y buscadores lo usan).
+const conCatalogo = [...paginas, 'catalogo/index.html'];
+for (const pagina of conCatalogo) {
+  if (!/<html[^>]*\slang="es(-[A-Z]{2})?"/.test(await read(pagina))) {
+    fail(`${pagina} no declara lang="es" en <html>.`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
