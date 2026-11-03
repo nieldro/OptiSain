@@ -3,6 +3,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/*
+  Aparicion al hacer scroll. Dos formas de marcar el HTML:
+  - [data-reveal-group] con hijos [data-reveal]: entran escalonados cuando el grupo llega a la vista.
+  - [data-reveal-solo]: un elemento suelto que entra por su cuenta.
+  Con "reducir movimiento" se muestran de una vez, sin animar.
+*/
 export function initReveal() {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const groups = document.querySelectorAll<HTMLElement>('[data-reveal-group]');
