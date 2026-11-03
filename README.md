@@ -49,6 +49,16 @@ Todavía no hay correo público de contacto ni Instagram: no se muestran en el s
 - Los 15 servicios y los 4 combos: [`src/data/services.ts`](src/data/services.ts).
 - Los textos fuente originales (para referencia) siguen en `contenido/`.
 
+## Planes, precios y catálogo
+
+- Los tres planes de página web (Esencial, Empresarial y Tienda en línea) salen de
+  [`src/data/plans.ts`](src/data/plans.ts): precio, cuotas, qué incluye y tiempo de entrega.
+  Los precios se muestran **sin IVA**. Los demás servicios se cotizan por WhatsApp.
+- El catálogo es una página aparte, [`src/pages/catalogo.astro`](src/pages/catalogo.astro) (`/catalogo/`,
+  con `noindex` y fuera del sitemap). **No lleva precios**; `npm run check` falla si aparece alguno.
+- Para actualizar el PDF: `npm run build && npm run catalogo`. Imprime `/catalogo/` con Puppeteer y deja
+  `public/catalogo-optisain.pdf` (4 páginas, A4).
+
 ## Marca
 
 Los colores y tipografías están definidos como tokens en
