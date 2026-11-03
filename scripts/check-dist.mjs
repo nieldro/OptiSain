@@ -32,6 +32,19 @@ for (const slug of legales) {
 if (sitemap.includes('/catalogo/')) fail('El sitemap incluye /catalogo/ (debe quedar fuera).');
 if (sitemap.includes('404')) fail('El sitemap incluye la página 404.');
 
+// 4. El sitio no carga nada de terceros (la política de cookies promete que no hay conexiones externas).
+//    Los únicos enlaces externos permitidos son a WhatsApp y al propio dominio.
+const propio = new URL(portada.match(/<link rel="canonical" href="([^"]+)"/)[1]).hostname;
+const permitidos = new Set(['wa.me', propio]);
+const paginas = ['index.html', '404.html', ...legales.map((s) => `${s}/index.html`)];
+for (const pagina of paginas) {
+  const html = await read(pagina);
+  for (const [, url] of html.matchAll(/\b(?:src|href|action)="(https?:\/\/[^"]+)"/g)) {
+    const host = new URL(url).hostname;
+    if (!permitidos.has(host)) fail(`${pagina} apunta a un servidor externo: ${url}`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
