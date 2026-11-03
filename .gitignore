@@ -12,6 +12,16 @@ dist/
 # Editors / OS
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
+
+# Plataformas de hosting
+.vercel/
+.netlify/
+
+# Tipos generados y paquetes locales
+*.tsbuildinfo
+*.tgz
 
 # Logs
 *.log
