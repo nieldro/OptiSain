@@ -72,6 +72,13 @@ for (const pagina of conCatalogo) {
   if (total !== 1) fail(`${pagina} tiene ${total} <h1> (debe tener exactamente uno).`);
 }
 
+// 8. Lo que no debe indexarse lleva noindex: el catálogo (página de impresión) y el 404.
+for (const pagina of ['catalogo/index.html', '404.html']) {
+  if (!/<meta name="robots" content="[^"]*noindex/.test(await read(pagina))) {
+    fail(`${pagina} debería llevar noindex.`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
