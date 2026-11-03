@@ -31,14 +31,17 @@ npm run og        # regenera public/og.jpg
 Todo vive en un solo archivo: [`src/config.ts`](src/config.ts).
 
 ```ts
-export const WHATSAPP_NUMBER = '573000000000'; // solo números, sin "+", formato internacional
-export const CONTACT_EMAIL = 'hola@optisain.co';
-export const INSTAGRAM_URL = 'https://instagram.com/optisain';
-export const SITE_URL = 'https://optisain.co';
+export const WHATSAPP_NUMBER = '573052027517'; // solo números, sin "+", formato internacional
+export const WHATSAPP_DISPLAY = '+57 305 202 7517';
+export const SITE_URL = 'https://optisain.35.196.253.146.sslip.io';
+export const LEGAL_HOLDER = '...'; // responsable de las páginas legales (también LEGAL_ID, LEGAL_CITY, LEGAL_EMAIL)
 ```
 
-Cambia esos cuatro valores antes de publicar y se actualizan en todo el sitio (header, hero,
-formulario, footer, SEO y JSON-LD).
+Cambiar esos valores actualiza todo el sitio (header, hero, formulario, footer, páginas legales,
+SEO y JSON-LD). Si cambias `SITE_URL`, cambia también `site` en `astro.config.mjs` y el `Sitemap:` de
+`public/robots.txt`.
+
+Todavía no hay correo público de contacto ni Instagram: no se muestran en el sitio.
 
 ## Cambiar textos y servicios
 
