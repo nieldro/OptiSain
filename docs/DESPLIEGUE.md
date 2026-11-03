@@ -6,7 +6,7 @@ El sitio es estático: `npm run build` genera `dist/` y nginx lo sirve desde `/v
 
 ```bash
 npm run build
-npm run check          # catálogo sin precios, páginas legales, sitemap, sin terceros
+npm run check          # catálogo sin precios, páginas legales, sitemap, SEO básico, enlaces, WhatsApp y sin terceros
 DEPLOY_HOST=usuario@servidor ./scripts/deploy.sh
 ```
 
