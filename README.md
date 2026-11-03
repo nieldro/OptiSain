@@ -118,8 +118,10 @@ node scripts/generate-og.mjs
 
 ## Qué falta reemplazar antes de publicar
 
-- **`src/config.ts`**: número real de WhatsApp, correo, Instagram y dominio (`SITE_URL`).
-- Después de cambiar el dominio o el logo, vuelve a correr `node scripts/generate-og.mjs` para
-  regenerar `public/og.jpg`.
-- Revisar en un navegador real (no solo el preview) que el planeta 3D y las animaciones se vean
-  bien en tu celular concreto, y correr Lighthouse una vez esté publicado en Vercel/Netlify.
+- **Dominio propio:** cuando exista, actualizar `SITE_URL`, `astro.config.mjs` y `public/robots.txt`,
+  quitar el `noindex` del servidor y regenerar la imagen con `npm run og`.
+- **Instagram y correo públicos:** aún no existen; agregarlos a `src/config.ts` y al pie cuando los haya.
+- **Renovación del certificado:** el timer no está activo (ver `docs/DESPLIEGUE.md`).
+- Revisar en un celular real que el agujero negro del hero se vea fluido (solo se probó con Chrome
+  sin tarjeta gráfica) y correr Lighthouse con el sitio publicado.
+- Que un abogado revise las páginas legales (ver `docs/LEGAL.md`).
