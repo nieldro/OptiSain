@@ -98,13 +98,12 @@ node scripts/generate-og.mjs
 ## Qué quedó hecho
 
 - Sitio de una sola página con las 10 secciones pedidas: header con progreso de lectura, hero con
-  planeta 3D (Three.js, cargado en un chunk aparte y diferido con `requestIdleCallback`), marquee,
+  agujero negro en WebGL (`blackhole.ts`, en un chunk aparte), marquee,
   servicios con filtros y tarjetas 3D tilt, "Cómo trabajamos" con línea de órbita animada por
   scroll, "Por qué OptiSain", banda de cierre con anillos orbitales, FAQ en acordeón accesible,
   formulario de contacto que arma el mensaje de WhatsApp, y footer.
-- Animaciones con GSAP + ScrollTrigger, scroll suave con Lenis, cursor con halo, botones
-  magnéticos. Todo respeta `prefers-reduced-motion` (se desactivan 3D, Lenis, parallax y
-  cursor/magnéticos).
+- Animaciones con GSAP + ScrollTrigger y scroll suave con Lenis. Todo respeta
+  `prefers-reduced-motion` (el héroe queda como imagen fija y se apagan Lenis y el parallax).
 - Todo el contenido es visible y accesible sin JavaScript; las animaciones son mejora progresiva
   (se aplican por JS, no dependen de clases ocultas en el HTML).
 - Si WebGL no está disponible, el canvas se oculta y queda el `<noscript>` con el isotipo SVG.
