@@ -2,7 +2,16 @@
   "name": "optisain-web",
   "type": "module",
   "version": "1.0.0",
+  "description": "Sitio web de OptiSain, estudio de servicios digitales en Colombia",
   "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nieldro/OptiSain.git"
+  },
+  "engines": {
+    "node": ">=20.3.0"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
