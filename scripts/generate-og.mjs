@@ -1,3 +1,5 @@
+// Genera public/og.jpg (1200x630), la imagen que se ve al compartir el sitio en redes.
+// Uso: npm run og
 import sharp from 'sharp';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
