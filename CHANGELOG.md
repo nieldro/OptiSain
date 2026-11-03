@@ -1,5 +1,18 @@
 # Cambios
 
+## 2026-11-03
+
+- `npm run check` ahora también revisa: `title` y meta description únicos, `lang="es"`, un solo `h1`,
+  `noindex` en catálogo y 404, archivos prometidos (og, PDF, favicon, iconos del manifiesto), enlaces
+  internos, `robots.txt` contra el dominio canónico y que todos los `wa.me` usen el número de `config.ts`.
+- Script `npm run verify` (build + check).
+- CI: permisos de solo lectura, cancelación de ejecuciones repetidas y límite de 10 minutos.
+- Dependabot para npm y GitHub Actions; plantillas de issue y de pull request.
+- `generate-catalogo.mjs` cierra navegador y servidor aunque falle; `deploy.sh` borra su paquete local con `trap`.
+- Manifiesto web con `id` y `scope`.
+- Documentación: `docs/ESTRUCTURA.md` y `docs/ANIMACIONES.md`; comentarios de cabecera en `reveal.ts`,
+  `smooth-scroll.ts` y `generate-og.mjs`.
+
 ## 2026-11-02
 
 - Página 404 con la marca; `Layout` acepta `noindex`.
