@@ -92,6 +92,16 @@ for (const file of prometidos) {
   if (!(await existe(file))) fail(`Falta dist/${file}.`);
 }
 
+// 10. Todo enlace interno de las páginas públicas apunta a algo que existe en dist/.
+for (const pagina of paginas) {
+  const html = await read(pagina);
+  for (const [, ruta] of html.matchAll(/\bhref="(\/[^"#?]*)[^"]*"/g)) {
+    if (ruta.startsWith('//')) continue;
+    const destino = ruta.endsWith('/') ? `${ruta}index.html` : ruta;
+    if (!(await existe(destino.slice(1)))) fail(`${pagina} enlaza a ${ruta}, que no existe en dist/.`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
