@@ -15,6 +15,15 @@ if (/\$\s?\d/.test(catalogo) || /\bCOP\b/i.test(catalogo)) {
   fail('catalogo/index.html muestra precios (el catálogo va sin precios).');
 }
 
+// 2. Las tres páginas legales existen y el pie de la portada enlaza a ellas.
+const legales = ['privacidad', 'terminos', 'cookies'];
+const portada = await read('index.html');
+for (const slug of legales) {
+  const html = await read(`${slug}/index.html`).catch(() => null);
+  if (!html) fail(`Falta la página legal /${slug}/.`);
+  if (!portada.includes(`/${slug}/`)) fail(`La portada no enlaza a /${slug}/.`);
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
