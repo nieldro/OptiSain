@@ -24,6 +24,14 @@ for (const slug of legales) {
   if (!portada.includes(`/${slug}/`)) fail(`La portada no enlaza a /${slug}/.`);
 }
 
+// 3. El sitemap incluye las páginas públicas y deja fuera el catálogo y el 404.
+const sitemap = await read('sitemap-0.xml');
+for (const slug of legales) {
+  if (!sitemap.includes(`/${slug}/`)) fail(`El sitemap no incluye /${slug}/.`);
+}
+if (sitemap.includes('/catalogo/')) fail('El sitemap incluye /catalogo/ (debe quedar fuera).');
+if (sitemap.includes('404')) fail('El sitemap incluye la página 404.');
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
