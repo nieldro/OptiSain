@@ -66,6 +66,12 @@ for (const pagina of conCatalogo) {
   }
 }
 
+// 7. Un solo <h1> por página: es la base de la jerarquía de títulos.
+for (const pagina of conCatalogo) {
+  const total = (await read(pagina)).match(/<h1[\s>]/g)?.length ?? 0;
+  if (total !== 1) fail(`${pagina} tiene ${total} <h1> (debe tener exactamente uno).`);
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
