@@ -45,6 +45,19 @@ for (const pagina of paginas) {
   }
 }
 
+// 5. Cada página pública tiene <title> y meta description, y los títulos no se repiten entre páginas.
+const titulos = new Map();
+for (const pagina of paginas) {
+  const html = await read(pagina);
+  const titulo = html.match(/<title>([^<]*)<\/title>/)?.[1]?.trim();
+  if (!titulo) fail(`${pagina} no tiene <title>.`);
+  else if (titulos.has(titulo)) fail(`${pagina} repite el <title> de ${titulos.get(titulo)}.`);
+  else titulos.set(titulo, pagina);
+  if (!/<meta name="description" content="[^"]{20,}"/.test(html)) {
+    fail(`${pagina} no tiene meta description (o es demasiado corta).`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
