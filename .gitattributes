@@ -1,5 +1,8 @@
 * text=auto
 
+# Los scripts de shell deben llegar con LF aunque se editen en Windows.
+*.sh text eol=lf
+
 *.pdf binary
 *.jpg binary
 *.png binary
