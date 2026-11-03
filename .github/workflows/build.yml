@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
 
+# El workflow solo lee el repo: no necesita permisos de escritura.
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
