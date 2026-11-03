@@ -102,6 +102,12 @@ for (const pagina of paginas) {
   }
 }
 
+// 11. robots.txt apunta al sitemap del mismo dominio que declara el canonical (si cambia SITE_URL, esto avisa).
+const origen = new URL(portada.match(/<link rel="canonical" href="([^"]+)"/)[1]).origin;
+if (!(await read('robots.txt')).includes(`Sitemap: ${origen}/sitemap-index.xml`)) {
+  fail(`robots.txt no apunta a ${origen}/sitemap-index.xml.`);
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
