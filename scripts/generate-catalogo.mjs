@@ -23,15 +23,20 @@ const server = createServer(async (req, res) => {
   }
 }).listen(4401);
 
-const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
-const page = await browser.newPage();
-await page.goto('http://localhost:4401/catalogo/', { waitUntil: 'networkidle0' });
-await page.evaluateHandle('document.fonts.ready');
-await page.pdf({
-  path: join(root, 'public', 'catalogo-optisain.pdf'),
-  printBackground: true,
-  preferCSSPageSize: true,
-});
-await browser.close();
-server.close();
-console.log('listo: public/catalogo-optisain.pdf');
+// try/finally: si Chromium falla, el servidor y el navegador se cierran igual y el proceso termina.
+let browser;
+try {
+  browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox'] });
+  const page = await browser.newPage();
+  await page.goto('http://localhost:4401/catalogo/', { waitUntil: 'networkidle0' });
+  await page.evaluateHandle('document.fonts.ready');
+  await page.pdf({
+    path: join(root, 'public', 'catalogo-optisain.pdf'),
+    printBackground: true,
+    preferCSSPageSize: true,
+  });
+  console.log('listo: public/catalogo-optisain.pdf');
+} finally {
+  await browser?.close();
+  server.close();
+}
