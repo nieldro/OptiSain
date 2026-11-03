@@ -108,6 +108,16 @@ if (!(await read('robots.txt')).includes(`Sitemap: ${origen}/sitemap-index.xml`)
   fail(`robots.txt no apunta a ${origen}/sitemap-index.xml.`);
 }
 
+// 12. Todos los enlaces a WhatsApp usan el número de src/config.ts (un número viejo pierde clientes).
+const config = await readFile(new URL('../src/config.ts', import.meta.url), 'utf8');
+const numero = config.match(/WHATSAPP_NUMBER = '(\d+)'/)?.[1];
+if (!numero) fail('No se pudo leer WHATSAPP_NUMBER de src/config.ts.');
+for (const pagina of conCatalogo) {
+  for (const [, otro] of (await read(pagina)).matchAll(/https:\/\/wa\.me\/(\d+)/g)) {
+    if (otro !== numero) fail(`${pagina} enlaza a wa.me/${otro}, distinto del número de config.ts.`);
+  }
+}
+
 if (failures.length) {
   console.error(`\n✗ ${failures.length} problema(s):\n` + failures.map((f) => `  - ${f}`).join('\n'));
   process.exit(1);
