@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+# Un push nuevo cancela la ejecucion anterior de la misma rama.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
