@@ -14,11 +14,17 @@ Más documentación: [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md), [`docs/LEGAL.md
 ## Desarrollo
 
 ```bash
+nvm use           # Node 22 (.nvmrc); sirve Node 20.3 o más nuevo
 npm install
 npm run dev       # http://localhost:4321
 npm run build     # genera dist/
+npm run check     # revisa dist/: catálogo sin precios, páginas legales, sitemap, sin terceros
 npm run preview   # sirve dist/ para revisar el build de producción
+npm run catalogo  # regenera public/catalogo-optisain.pdf (necesita npm run build antes)
+npm run og        # regenera public/og.jpg
 ```
+
+`npm run check` también corre en GitHub Actions en cada push.
 
 ## Cambiar los datos de contacto
 
