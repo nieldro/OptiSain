@@ -19,6 +19,7 @@
     "preview": "astro preview",
     "catalogo": "node scripts/generate-catalogo.mjs",
     "og": "node scripts/generate-og.mjs",
+    "check": "node scripts/check-dist.mjs",
     "astro": "astro"
   },
   "dependencies": {
