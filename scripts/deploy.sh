@@ -17,8 +17,11 @@ cd "$(dirname "$0")/.."
 [ -f dist/index.html ] || { echo "No hay dist/. Corre primero: npm run build" >&2; exit 1; }
 
 PAQUETE="optisain-dist.tar"
-tar -C dist --exclude=robots.txt -cf "/tmp/${PAQUETE}" .
-scp "/tmp/${PAQUETE}" "${DEPLOY_HOST}:/tmp/${PAQUETE}"
+LOCAL_TAR="$(mktemp)"
+# El paquete local se borra siempre, incluso si scp o ssh fallan a mitad de camino.
+trap 'rm -f "${LOCAL_TAR}"' EXIT
+tar -C dist --exclude=robots.txt -cf "${LOCAL_TAR}" .
+scp "${LOCAL_TAR}" "${DEPLOY_HOST}:/tmp/${PAQUETE}"
 
 ssh "${DEPLOY_HOST}" bash -s <<EOF
 set -euo pipefail
@@ -29,5 +32,4 @@ sudo find ${REMOTE_DIR} -type f -exec chmod 644 {} +
 rm -f /tmp/${PAQUETE}
 EOF
 
-rm -f "/tmp/${PAQUETE}"
 echo "Publicado en ${DEPLOY_HOST}:${REMOTE_DIR}"
