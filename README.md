@@ -8,8 +8,9 @@ respaldo en CSS si no hay WebGL), animaciones con GSAP/ScrollTrigger y scroll su
 Además de la portada tiene la sección de planes con precios, las páginas legales (privacidad,
 términos y cookies), una página 404 y el catálogo en PDF.
 
-Más documentación: [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md), [`docs/LEGAL.md`](docs/LEGAL.md) y
-[`CHANGELOG.md`](CHANGELOG.md). Las reglas de marca están en [`CLAUDE.md`](CLAUDE.md).
+Más documentación: [`docs/ESTRUCTURA.md`](docs/ESTRUCTURA.md) (dónde cambiar cada cosa),
+[`docs/ANIMACIONES.md`](docs/ANIMACIONES.md), [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md),
+[`docs/LEGAL.md`](docs/LEGAL.md) y [`CHANGELOG.md`](CHANGELOG.md). Las reglas de marca están en [`CLAUDE.md`](CLAUDE.md).
 
 ## Desarrollo
 
