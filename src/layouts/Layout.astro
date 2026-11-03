@@ -9,12 +9,15 @@ interface Props {
   description?: string;
   // Las páginas internas (legales) no llevan el catálogo ni las preguntas frecuentes.
   catalog?: boolean;
+  // Páginas que no deben aparecer en buscadores (por ejemplo, el error 404).
+  noindex?: boolean;
 }
 
 const {
   title = 'OptiSain | Páginas web, tiendas online, chatbots y automatización en Colombia',
   description = 'Estudio digital en Colombia. Creamos páginas web, tiendas online, chatbots con IA, automatizaciones y dashboards para que tu negocio venda más. Cotiza gratis.',
   catalog = true,
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE_URL).toString();
@@ -64,6 +67,7 @@ const faqPage = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
 
     <title>{title}</title>
     <meta name="description" content={description} />
