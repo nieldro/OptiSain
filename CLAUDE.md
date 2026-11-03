@@ -22,7 +22,7 @@ Reglas: no agregar otros colores de marca. No usar ámbar sobre fondos claros. N
 
 Tipografía (Google Fonts, con `font-display: swap`): **Lexend** 600–700 para títulos, **Manrope** 400–600 para texto.
 
-Logo: `marca/logo/` (SVG vectorizado). Sobre fondo oscuro usar `optisain-logo-gainsboro.svg`; el isotipo (solo planeta) para favicon y espacios pequeños. Íconos en `marca/iconos/`.
+Logo: `public/logo/` (SVG vectorizado). Sobre fondo oscuro usar `optisain-logo-gainsboro.svg`; el isotipo (solo planeta) para favicon y espacios pequeños. Íconos en `public/iconos/`.
 
 ## Estilo visual
 Oscuro, premium, tecnológico, con tema de órbita/Saturno (anillos, estrellas de 4 puntas como las del logo, trayectorias elípticas). Animaciones fluidas pero sobrias; nada de efectos que distraigan de leer.
