@@ -67,9 +67,13 @@ Los colores y tipografías están definidos como tokens en
 
 El logo y los íconos están en `public/logo/` y `public/iconos/`.
 
-## Publicar gratis
+## Publicar
 
-### Vercel
+El sitio vive en un servidor propio con nginx. Para publicar un cambio: `npm run build`, `npm run check`
+y `DEPLOY_HOST=usuario@servidor ./scripts/deploy.sh`. Los detalles (robots, `noindex` mientras no haya
+dominio y renovación del certificado) están en [`docs/DESPLIEGUE.md`](docs/DESPLIEGUE.md).
+
+### Alternativa gratuita: Vercel
 
 1. Sube el proyecto a un repositorio de GitHub/GitLab.
 2. Entra a [vercel.com](https://vercel.com) → **Add New Project** → importa el repositorio.
